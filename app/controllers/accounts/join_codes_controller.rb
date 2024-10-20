@@ -1,8 +1,6 @@
 class Accounts::JoinCodesController < ApplicationController
   def show
-    respond_to do |format|
-      format.svg { render inline: qr_code_svg }
-    end
+    render_svg RQRCode::QRCode.new(join_url(Current.account.join_code)).as_svg(viewbox: true, fill: :white, color: :black)
   end
 
   def update
@@ -11,9 +9,8 @@ class Accounts::JoinCodesController < ApplicationController
   end
 
   private
-    def qr_code_svg
-      join_path(Current.account.join_code).then do |url|
-        RQRCode::QRCode.new(url).as_svg(viewbox: true, fill: :white, color: :black)
-      end
+    # FIXME: Upstream to Rails as render svg:
+    def render_svg(svg)
+      render content_type: Mime[:svg], body: svg
     end
 end
