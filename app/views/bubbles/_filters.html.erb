@@ -167,7 +167,7 @@
                 <%= button_to_chip "No one", params: { text: "Unassigned", name: "assignments", value: "unassigned", frame: :assignee_chips }, data: { action: "filter-form#clearCategory", filter_form_name_param: "assignee_ids[]" } %>
               </li>
               <li>
-                <%= button_to_chip "Me", params: { text: "for Me", name: "assignee_ids[]", value: Current.user.id, frame: :assignee_chips }, data: { action: "filter-form#clearCategory", filter_form_name_param: "assignments" } %>
+                <%= button_to_chip "Me", params: { text: "for #{Current.user.name}", name: "assignee_ids[]", value: Current.user.id, frame: :assignee_chips }, data: { action: "filter-form#clearCategory", filter_form_name_param: "assignments" } %>
               </li>
               <% Current.account.users.active.without(Current.user).order(:name).each do |user| %>
                 <li>
@@ -183,11 +183,11 @@
               <li><strong class="filter__label">Assigned by…</strong></li>
 
               <li>
-                <%= button_to_chip "Me", params: { text: "by Me", name: "assigner_ids[]", value: Current.user.id, frame: :assigner_chips } %>
+                <%= button_to_chip "Me", params: { text: "by #{Current.user.name}", name: "assigner_ids[]", value: Current.user.id, frame: :assigner_chips }, data: { action: "filter-form#clearCategory", filter_form_name_param: "assignments" } %>
               </li>
               <% Current.account.users.active.without(Current.user).order(:name).each do |user| %>
                 <li>
-                  <%= button_to_chip user.name, params: { text: "by #{user.name}", name: "assigner_ids[]", value: user.id, frame: :assigner_chips } %>
+                  <%= button_to_chip user.name, params: { text: "by #{user.name}", name: "assigner_ids[]", value: user.id, frame: :assigner_chips }, data: { action: "filter-form#clearCategory", filter_form_name_param: "assignments" } %>
                 </li>
               <% end %>
             </menu>
