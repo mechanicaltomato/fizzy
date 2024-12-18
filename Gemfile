@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+git_source(:bc) { |repo| "https://github.com/basecamp/#{repo}" }
 ruby file: ".ruby-version"
 
 gem "rails", github: "rails/rails", branch: "main"
@@ -9,6 +10,7 @@ gem "propshaft"
 gem "stimulus-rails"
 gem "turbo-rails"
 gem "hotwire_combobox", github: "josefarias/hotwire_combobox", branch: :main
+gem "house_md", bc: "house", branch: :renderer
 
 # Deployment and drivers
 gem "bootsnap", require: false

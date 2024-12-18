@@ -1,40 +1,47 @@
-class MarkdownRenderer
-  require_relative "markdown_renderer/parsing"
-  require_relative "markdown_renderer/markup"
+require "rouge/plugins/redcarpet"
 
-  include Parsing, Markup
+class MarkdownRenderer < HouseMd::Renderer
+  class Generator < HouseMd::Generator::Html
+    include Rouge::Plugins::Redcarpet
 
-  def initialize
-    @id_counts = Hash.new(0)
-  end
+    def initialize
+      @id_counts = Hash.new 0
+    end
 
-  def render(content)
-    content
-      .then { |c| parse_paragraphs(c) }
-      .then { |c| parse_bold_italics(c) }
-      .then { |c| parse_bold(c) }
-      .then { |c| parse_italics(c) }
-      .then { |c| parse_strikethrough(c) }
-      .then { |c| parse_highlight(c) }
-      .then { |c| parse_headers(c) }
-      .then { |c| parse_tables(c) }
-      .then { |c| parse_ordered_lists(c) }
-      .then { |c| parse_unordered_lists(c) }
-      .then { |c| parse_block_quotes(c) }
-      .then { |c| parse_horizontal_rules(c) }
-      .then { |c| parse_images(c) }
-      .then { |c| parse_links(c) }
-      .then { |c| parse_code_blocks(c) }
-      .then { |c| parse_code_spans(c) }
-  end
-
-  private
-    attr_reader :id_counts
-
-    def unique_id(text)
-      text.parameterize.then do |base_id|
-        id_counts[base_id] += 1
-        id_counts[base_id] > 1 ? "#{base_id}-#{id_counts[base_id]}" : base_id
+    def header(text, header_level)
+      unique_id(text).then do |id|
+        <<~HTML.chomp
+          <h#{header_level} id="#{id}">
+            #{text} <a href="##{id}" class="heading__link" aria-hidden="true">#</a>
+          </h#{header_level}>
+        HTML
       end
     end
+
+    def image(url, alt_text)
+      <<~HTML.chomp
+        <a href="#{url}" data-action="lightbox#open:prevent" data-lightbox-target="image" data-lightbox-url-value="#{url}?disposition=attachment">
+          <img src="#{url}" alt="#{alt_text}">
+        </a>
+      HTML
+    end
+
+    def code_block(code, language)
+      block_code(code, language) # call Rouge Redcarpet plugin
+    end
+
+    private
+      attr_reader :id_counts
+
+      def unique_id(text)
+        text.parameterize.then do |base_id|
+          id_counts[base_id] += 1
+          id_counts[base_id] > 1 ? "#{base_id}-#{id_counts[base_id]}" : base_id
+        end
+      end
+  end
+
+  def initialize
+    @generator = Generator.new
+  end
 end

@@ -1,28 +1,16 @@
-require "redcarpet/render_strip"
-
 module ActionText
   class Markdown < Record
-    DEFAULT_RENDERER_OPTIONS = {
-      filter_html: false
-    }
-
-    DEFAULT_MARKDOWN_EXTENSIONS = {
-      autolink: true,
-      highlight: true,
-      no_intra_emphasis: true,
-      fenced_code_blocks: true,
-      lax_spacing: true,
-      strikethrough: true,
-      tables: true
-    }
-
-    mattr_accessor :renderer, default: Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(DEFAULT_RENDERER_OPTIONS), DEFAULT_MARKDOWN_EXTENSIONS)
-    mattr_accessor :plain_renderer, default: Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
+    mattr_accessor :html_renderer
+    mattr_accessor :plain_renderer
 
     belongs_to :record, polymorphic: true, touch: true
 
     def to_html
-      (renderer.try(:call) || renderer).render(content).html_safe
+      to_unsafe_html.html_safe
+    end
+
+    def to_unsafe_html
+      (html_renderer.try(:call) || html_renderer).render(content)
     end
 
     def to_plain_text

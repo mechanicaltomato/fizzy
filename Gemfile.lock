@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/basecamp/house
+  revision: a8b19e70bbb95a7a0d27e38985a99c2d697a6650
+  branch: renderer
+  specs:
+    house_md (1.0.0)
+      rails
+      zeitwerk
+
+GIT
   remote: https://github.com/josefarias/hotwire_combobox.git
   revision: 57ee6c9087320fab9383a07fa919fe75e0ea72ba
   branch: main
@@ -346,6 +355,7 @@ DEPENDENCIES
   capybara
   debug
   hotwire_combobox!
+  house_md!
   importmap-rails
   jbuilder
   propshaft
