@@ -4,7 +4,7 @@ class BubblesController < ApplicationController
   skip_before_action :set_bucket, only: :index
 
   before_action :set_filter, only: :index
-  before_action :set_bubble, only: %i[ show edit update ]
+  before_action :set_bubble, only: %i[ show edit update destroy ]
 
   def index
     @bubbles = @filter.bubbles
@@ -20,6 +20,11 @@ class BubblesController < ApplicationController
   end
 
   def edit
+  end
+
+  def destroy
+    @bubble.destroy!
+    redirect_to bubbles_path, notice: "Bubble deleted"
   end
 
   def update

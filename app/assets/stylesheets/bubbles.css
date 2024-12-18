@@ -81,6 +81,7 @@
     border-radius: var(--bubble-shape);
     display: flex;
     font-size: 6cqi;
+    inline-size: min-content;
     inset: 70cqi 7cqi auto auto;
     min-inline-size: 4.5ch;
     padding: 0;
@@ -104,10 +105,13 @@
 
     .boost__input {
       color: var(--bubble-color);
-      field-sizing: content;
       font-weight: 800;
       padding: 0;
       text-align: center;
+
+      @supports (field-sizing: content) {
+        field-sizing: content;
+      }
     }
 
     &.boosting {
@@ -369,15 +373,6 @@
     position: relative;
     transition: background-color 200ms ease-out;
 
-    &:nth-of-type(10)::after {
-      border-bottom: 1px dashed var(--color-subtle-dark);
-      block-size: 0;
-      content: "";
-      inline-size: 100%;
-      inset: auto 0 0 0;
-      position: absolute;
-    }
-
     @media (hover: hover) {
       &:hover {
         background-color: color(from var(--bubble-color) srgb r g b / 0.15);
@@ -394,6 +389,27 @@
       font-size: 0.5em;
     }
   }
+}
+
+.bubbles-list__divider {
+  --border-color: var(--divider-color);
+  --border-size: 2px;
+  --divider-color: var(--color-subtle-dark);
+
+  font-size: 1rem;
+}
+
+.btn--reversed.bubbles-list__handle {
+  --btn-background: var(--divider-color);
+
+  font-size: 0.9rem;
+  cursor: grab;
+}
+
+.bubbles-list__count {
+  background-color: var(--divider-color);
+  color: var(--color-ink-reversed);
+  padding: 0.1em 0.7em;
 }
 
 .bubble__title-text {

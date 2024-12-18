@@ -34,6 +34,10 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+group :development do
+  gem "hotwire-spark"
+end
+
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
