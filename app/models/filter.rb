@@ -14,10 +14,6 @@ class Filter < ApplicationRecord
     rescue ActiveRecord::RecordNotUnique
       find_by_params(attrs).tap(&:touch)
     end
-
-    def digest_params(params)
-      Digest::MD5.hexdigest params.to_h.sort.to_json
-    end
   end
 
   def bubbles
