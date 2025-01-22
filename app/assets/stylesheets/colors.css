@@ -12,6 +12,7 @@
   --lch-red: 51% 0.2 31;
   --lch-green: 65.59% 0.234 142.49;
   --lch-green-light: 95% 0.03 142.49;
+  --lch-yellow: 96.01% 0.0348 81.29;
   --lch-always-black: 0% 0 0;
   --lch-always-white: 100% 0 0;
 
@@ -28,6 +29,7 @@
   --color-subtle-dark: oklch(var(--lch-gray-dark));
   --color-selected: oklch(var(--lch-blue-light));
   --color-selected-dark: oklch(var(--lch-blue-dark));
+  --color-highlight: oklch(var(--lch-yellow));
   --color-marker: oklch(var(--lch-orange));
   --color-always-black: oklch(var(--lch-always-black));
   --color-always-white: oklch(var(--lch-always-white));

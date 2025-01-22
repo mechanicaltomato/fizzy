@@ -1,6 +1,6 @@
 <% bubble = event.summary.bubble %>
 
-<%= link_to bucket_bubble_path(bubble.bucket, bubble), class: "panel shadow center flex-inline align-center justify-start gap position-relative",
+<%= link_to bucket_bubble_path(bubble.bucket, bubble), class: "event panel shadow center flex-inline align-center justify-start gap position-relative",
       style: "grid-area: #{ event.created_at.hour }/ #{ event_column(event) }; --panel-border-radius: 0.7em; --panel-padding: 0.3em 0.6em; --panel-size: auto; --bubble-color: #{ bubble.color }; #{ bubble_rotation(bubble) }",
       data: { controller: "animation", animation_play_class: "bubble--wobble", animation_play_on_load_value: "true", action: "mouseover->animation#play" } do %>
   <div class="bubble__shape flex-item-no-shrink txt-large"></div>

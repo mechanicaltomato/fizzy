@@ -1,13 +1,13 @@
-<h2 class="txt-x-large margin-block-end"><%= event_day_title(activity_day) %></h2>
-<% if @events.any? %>
-  <div class="center events">
-    <h3>Active</h3>
-    <h3>Discussed</h3>
-    <h3>Added</h3>
-    <h3>Popped</h3>
-
-    <%= render events %>
-  </div>
-<% else %>
-  <p class="events--none txt-align-center">No activity for this day.</p>
-<% end %>
+<div class="margin-block-end-double">
+  <h2 class="txt-x-large margin-block-end"><%= event_day_title(activity_day) %></h2>
+  <% if @events.any? %>
+    <div class="center events">
+      <%= render_column_headers %>
+      <%= render_event_grid_cells %>
+      <%= render_time_labels %>
+      <%= render events %>
+    </div>
+  <% else %>
+    <p class="events--none txt-align-center">No activity for this day.</p>
+  <% end %>
+</div>
