@@ -1,11 +1,7 @@
 <div class="bubble__pop-container center border-radius pad flex-inline align-center justify-center gap-half pad-inline-double" style="--bubble-color: <%= @bubble.color %>">
   <% if bubble.popped? %>
     <% event = bubble.events.where(action: "popped").last %>
-    <% if event %>
-      <span class="bubble__pop-message">Popped by <%= event.creator.name %> on <%= event.created_at.to_date.strftime('%B %-d') %>.</span>
-    <% else %>
-      <span class="bubble__pop-message">Popped</span>
-    <% end %>
+      <span class="bubble__pop-message">Popped by <%= "#{ event.creator.name } on #{ event.created_at.to_date.strftime('%B %-d') }" if event %>.</span>
     <%= button_to bucket_bubble_pop_path(bubble.bucket, bubble), method: :delete, class: "btn btn--plain borderless fill-transparent" do %>
       <span>Un-pop</span>
     <% end %>
