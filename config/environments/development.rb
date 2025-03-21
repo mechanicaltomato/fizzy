@@ -41,6 +41,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Set host to be used by links generated in mailer templates.
+  config.action_mailer.default_url_options = { host: "%{tenant}.example.com", port: 3006 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
