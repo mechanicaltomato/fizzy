@@ -8,15 +8,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resolve "Bubble" do |bubble, options|
-    route_for :bucket_bubble, bubble.bucket, bubble, options
-  end
-
-  resolve "Comment" do |comment, options|
-    options[:anchor] = ActionView::RecordIdentifier.dom_id(comment)
-    route_for :bucket_bubble, comment.bubble.bucket, comment.bubble, options
-  end
-
   resources :bubbles do
     scope module: :bubbles do
       resource :pin
@@ -100,7 +91,15 @@ Rails.application.routes.draw do
 
   namespace :my do
     resources :pins
+  resource :terminal, only: [ :show, :edit ]
+
+  resolve "Bubble" do |bubble, options|
+    route_for :bucket_bubble, bubble.bucket, bubble, options
   end
 
-  resource :terminal, only: [ :show, :edit ]
+  resolve "Comment" do |comment, options|
+    options[:anchor] = ActionView::RecordIdentifier.dom_id(comment)
+    route_for :bucket_bubble, comment.bubble.bucket, comment.bubble, options
+  end
+
 end
