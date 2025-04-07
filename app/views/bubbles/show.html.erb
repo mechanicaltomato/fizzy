@@ -27,7 +27,7 @@
     <div class="card__actions-container card__actions-container--top center border-radius flex-inline align-center justify-center gap"  style="--bubble-color: <%= @bubble.color %>;">
       <span>Considering</span>
       <% if @bubble.doing? %>
-        <%= form_with url: bucket_bubble_engagement_path(@bubble.bucket, @bubble), method: :delete, data: { controller: "form" }, class: "flex" do %>
+        <%= form_with url: bubble_engagement_path(@bubble), method: :delete, data: { controller: "form" }, class: "flex" do %>
           <label class="switch flex-item-no-shrink">
             <input type="checkbox" class="switch__input" data-action="form#submit" checked>
             <span class="switch__btn round"></span>
@@ -35,7 +35,7 @@
           </label>
         <% end %>
       <% else %>
-        <%= form_with url: bucket_bubble_engagement_path(@bubble.bucket, @bubble), method: :post, data: { controller: "form" }, class: "flex" do %>
+        <%= form_with url: bubble_engagement_path(@bubble), method: :post, data: { controller: "form" }, class: "flex" do %>
           <label class="switch flex-item-no-shrink">
             <input type="checkbox" class="switch__input" data-action="form#submit">
             <span class="switch__btn round"></span>

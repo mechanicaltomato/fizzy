@@ -9,7 +9,7 @@ class Bubbles::EngagementsControllerTest < ActionDispatch::IntegrationTest
     bubble = bubbles(:text)
 
     assert_changes -> { bubble.reload.doing? }, from: false, to: true do
-      post bucket_bubble_engagement_url(bubble.bucket, bubble)
+      post bubble_engagement_url(bubble)
     end
 
     assert_redirected_to bucket_bubble_url(bubble.bucket, bubble)
@@ -19,7 +19,7 @@ class Bubbles::EngagementsControllerTest < ActionDispatch::IntegrationTest
     bubble = bubbles(:logo)
 
     assert_changes -> { bubble.reload.doing? }, from: true, to: false do
-      delete bucket_bubble_engagement_url(bubble.bucket, bubble)
+      delete bubble_engagement_url(bubble)
     end
 
     assert_redirected_to bucket_bubble_url(bubble.bucket, bubble)

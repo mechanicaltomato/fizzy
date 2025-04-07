@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resource :watch
       resources :assignments
       resources :boosts
+      resource :engagement
       resources :taggings
     end
   end
@@ -48,7 +49,6 @@ Rails.application.routes.draw do
       scope module: :bubbles do
         resource :image
         resource :pop
-        resource :engagement
         resource :publish
         resource :recover
         resources :stagings
