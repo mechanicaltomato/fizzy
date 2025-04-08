@@ -19,10 +19,19 @@
   cursor: pointer;
   display: flex;
   inline-size: var(--expander-width);
+  justify-content: flex-start;
   padding-inline: 1.5ch;
   position: relative;
   white-space: nowrap;
   z-index: 1;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  [open] & {
+    box-shadow: none;
+  }
 
   .icon {
     font-size: 1ch;
@@ -32,7 +41,10 @@
 .expander__content {
   --btn-border-radius: var(--expander-radius);
 
+  align-items: stretch;
   border-radius: var(--expander-radius);
+  flex-direction: column;
+  gap: 0;
   padding-block-start: var(--expander-height);
 }
 
@@ -71,5 +83,21 @@
 }
 
 .expander__item {
+  --btn-background: transparent;
+  --btn-border-radius: 0.3em;
+  --btn-border-size: 0;
+  --btn-font-weight: 500;
+  --btn-padding: var(--inline-space-half) var(--inline-space);
+  --hover-size: 0;
+  --outline-color: transparent;
+
+  inline-size: calc(100% + var(--inline-space) * 2);
+  margin-inline-start: calc(-1 * var(--inline-space));
+  justify-content: flex-start;
   white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    background-color: oklch(var(--lch-white) / 15%);
+  }
 }
