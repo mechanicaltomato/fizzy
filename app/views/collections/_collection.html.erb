@@ -1,0 +1,27 @@
+<li class="collection flex flex-column txt-align-center max-width">
+  <%= link_to cards_path(collection_ids: [ collection ]),
+        class: "border border-radius margin-block-end-half cards__container flex justify-center align-center position-relative",
+        aria: { hidden: true }, tabindex: -1 do %>
+    <div class="cards collection__cards flex flex-wrap gap justify-center align-end" style="view-transition-name: cards_<%= collection.id %>">
+      <% collection.cards.active.published_or_drafted_by(Current.user).ordered_by_activity.limit(10).each do |card| %>
+        <div class="<%= class_names("card", drafted: card.drafted?) %>" style="--card-color: <%= card.color %>; <%= card_rotation(card) %>"
+          data-card-size-target="card"
+          data-activity-score="<%= card.activity_score %>"
+          data-activity-score-at="<%= card.activity_score_at.to_i %>">
+          <span class="card__shape"></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="flex align-center justify-center flex-column flex-wrap center gap-half position-relative full-width">
+    <%= link_to cards_path(collection_ids: [ collection ]), class: "txt-ink flex flex-column" do %>
+      <strong class="txt-large"><%= collection.name %></strong>
+    <% end %>
+
+    <%= link_to edit_collection_path(collection), class: "btn txt-small collection__button" do %>
+      <%= icon_tag "settings" %>
+      <span class="for-screen-reader">Settings for <%= collection.name %></span>
+    <% end %>
+  </div>
+</li>

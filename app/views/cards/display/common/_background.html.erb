@@ -1,0 +1,11 @@
+<div class="card__background">
+  <%= image_tag card.image.presence || "", size: 120, data: { upload_preview_target: "image" } %>
+</div>
+
+<% if card.closed? %>
+  <div class="card__closed flex flex-column">
+    <span class="card__closed-title txt-uppercase"><%= card.closure.reason %></span>
+    <strong><%= card.closed_at.strftime("%b %d, %Y") %></strong>
+    <span>by <span class="card__closed-by"><%= card.closed_by.name %></span></span>
+  </div>
+<% end %>

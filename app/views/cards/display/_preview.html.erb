@@ -1,0 +1,31 @@
+<% cache [ card ] do %>
+  <article class="card shadow border flex flex-column position-relative txt-align-start full-width border-radius"
+    style="--card-color: <%= card.color %>; view-transition-name: <%= dom_id(card, :ticket) %>;"
+    id="<%= dom_id(card, :ticket) %>">
+    <header class="card__header flex align-center gap min-width">
+      <span class="card__collection txt-uppercase overflow-ellipsis txt-reversed"><%= card.collection.name %></span>
+      <%= render "cards/display/preview/tags", card: card %>
+    </header>
+
+    <div class="card__body flex gap full-width flex-item-grow">
+      <div class="card__body-header">
+        <h1 class="card__title">
+          <span class="card__title-link overflow-line-clamp"><%= card_title(card) %></span>
+        </h1>
+      </div>
+
+      <%= link_to collection_card_path(card.collection, card), class: "card__link" do %>
+        <span class="for-screen-reader"><%= card_title(card) %></span>
+      <% end %>
+
+      <%= render "cards/stagings/stages", card: card if card.doing? %>
+    </div>
+
+    <footer class="card__footer full-width flex align-start gap">
+      <%= render "cards/display/preview/people", card: card %>
+      <%= render "cards/display/preview/meta", card: card %>
+    </footer>
+
+    <%= render "cards/display/common/background", card: card %>
+  </article>
+<% end %>

@@ -20,7 +20,7 @@
     }
   }
 
-  .bubble {
+  .something-to-rename {
     --bubble-background: radial-gradient(circle at center, color(from var(--bubble-color) srgb r g b / 0.25), color(from var(--bubble-color) srgb r g b / 0.05));
     --bubble-border-width: 0.2rem;
     --hover-size: 0;
@@ -110,15 +110,15 @@
       }
 
       @media (hover: hover) {
-        .bubbles .bubble:not(.popped):hover & {
+        .bubbles .something-to-rename:not(.popped):hover & {
           transform: translate(0, -1rem);
         }
 
-        .bubbles .bubble:not(.popped):hover & + & {
+        .bubbles .something-to-rename:not(.popped):hover & + & {
           transform: translate(1rem, -1rem);
         }
 
-        .bubbles .bubble:not(.popped):hover & + & + & {
+        .bubbles .something-to-rename:not(.popped):hover & + & + & {
           transform: translate(1.5rem, -0.5rem);;
         }
       }
@@ -176,7 +176,7 @@
       }
 
       @media (hover: hover) {
-        .bubbles .bubble:not(.popped):hover & {
+        .bubbles .something-to-rename:not(.popped):hover & {
           transform: translate(-0.5rem, -2rem);
         }
       }
@@ -195,22 +195,22 @@
       }
 
       @media (hover: hover) {
-        .bubbles .bubble:not(.popped):hover & {
+        .bubbles .something-to-rename:not(.popped):hover & {
           transform: rotate(calc(var(--rotation) + var(--bubble-shift) * 1)) translate(0rem, 0.5rem);
         }
       }
     }
 
     @media (hover: hover) {
-      .bubbles .bubble:not(.popped):hover & {
+      .bubbles .something-to-rename:not(.popped):hover & {
         transform: translate(1rem, 1rem);
       }
 
-      .bubbles .bubble:not(.popped):hover & + & {
+      .bubbles .something-to-rename:not(.popped):hover & + & {
         transform: translate(0, -1rem);
       }
 
-      .bubbles .bubble:not(.popped):hover & + & + & {
+      .bubbles .something-to-rename:not(.popped):hover & + & + & {
         transform: translate(-1rem, -1rem);
       }
     }
@@ -227,7 +227,7 @@
     transition: 0.2s ease;
 
     @media (hover: hover) {
-      .bubbles .bubble:not(.popped):hover & {
+      .bubbles .something-to-rename:not(.popped):hover & {
         transform: rotate(calc(var(--bubble-rotate) + var(--bubble-shift))) scale(0.9);
       }
     }
@@ -273,7 +273,7 @@
       margin-inline: var(--tray-size);
     }
 
-    .bubble {
+    .something-to-rename {
       order: 0;
     }
 
@@ -379,22 +379,22 @@
       }
     }
 
-    textarea {
-      --input-color: var(--bubble-color);
-      --input-border-radius: 0;
+    /*textarea {*/
+    /*  --input-color: var(--bubble-color);*/
+    /*  --input-border-radius: 0;*/
 
-      font-size: 9cqi;
-      font-weight: 800;
-      line-height: 1.2;
+    /*  font-size: 9cqi;*/
+    /*  font-weight: 800;*/
+    /*  line-height: 1.2;*/
 
-      &::selection {
-        background-color: var(--bubble-color);
-        color: var(--color-ink-reversed);
-      }
-    }
+    /*  &::selection {*/
+    /*    background-color: var(--bubble-color);*/
+    /*    color: var(--color-ink-reversed);*/
+    /*  }*/
+    /*}*/
 
     @media (hover: hover) {
-      .bubble:has(.bubble__image img:not([src=""])):hover & {
+      .something-to-rename:has(.bubble__image img:not([src=""])):hover & {
         color: var(--color-ink-reversed);
         text-shadow: 0 0 0.2em var(--bubble-color), 0 0 0.2em var(--bubble-color), 0 0 0.2em var(--bubble-color);
         position: relative;
@@ -422,7 +422,7 @@
       --bubble-border-color: color-mix(in srgb, var(--bubble-color) 30%, var(--color-bg));
     }
 
-    .bubble & {
+    .something-to-rename & {
       --bubble-size: 100%;
     }
 

@@ -1,0 +1,22 @@
+<% @page_title = "Create a new collection" %>
+
+<% content_for :header do %>
+  <nav>
+    <%= link_to_home icon: "arrow-left", label: "Go back", class: "flex-item-justify-start" %>
+  </nav>
+<% end %>
+
+<div class="panel shadow center" style="--panel-size: 55ch; view-transition-name: new-collection">
+  <%= form_with model: @collection, class: "flex flex-column gap txt-large", data: { controller: "form" } do |form| %>
+    <h2 class="txt-x-large">Create a new collection</h2>
+    <label class="flex align-center gap">
+      <%= form.text_field :name, required: true, class: "input full-width", autofocus: true, placeholder: "Give it a name…", data: { action: "keydown.esc@document->form#cancel" } %>
+    </label>
+
+    <button type="submit" id="log_in" class="btn btn--reversed center">
+      <%= icon_tag "check" %>
+      <span class="for-screen-reader">Save</span>
+    </button>
+    <%= link_to "Cancel and go back", root_path, data: { form_target: "cancel", turbo_frame: "_top" }, hidden: true %>
+  <% end %>
+</div>

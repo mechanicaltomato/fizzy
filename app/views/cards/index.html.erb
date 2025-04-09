@@ -1,0 +1,14 @@
+<% @page_title = @filter.summary %>
+
+<%= render "filters/broadcasts", filter: @filter %>
+
+<% content_for :header do %>
+  <%= render "cards/index/header", filter: @filter %>
+<% end %>
+
+<div class="cards--columns">
+  <%= render "cards/index/engagement/considering", cards: @considering_cards %>
+  <%= render "cards/index/engagement/doing", cards: @doing_cards, filter: @filter %>
+</div>
+
+<%= render "cards/index/engagement/closed", cards: @closed_cards, filter: @filter %>

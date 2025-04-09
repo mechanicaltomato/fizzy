@@ -1,0 +1,10 @@
+<%= form_with url: card_boosts_path(card), class: "pad-inline flex align-center gap" do %>
+  <span class="overflow-ellipsis">
+    <strong><%= number_field_tag :boost_count, card.boosts_count, min: 1, class: "boost__input input", autocomplete: "off" %></strong>
+    <span><%= card.boosts_count == 1 ? "boost" : "boosts" %></span>
+  </span>
+  <%= tag.button class: "btn", type: :submit, style: "font-size: 0.4em" do %>
+    <%= icon_tag "add" %>
+    <span class="for-screen-reader">Boost</span>
+  <% end %>
+<% end %>

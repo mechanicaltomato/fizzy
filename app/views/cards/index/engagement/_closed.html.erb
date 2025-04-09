@@ -1,0 +1,13 @@
+<div class="margin-block">
+  <h2 class="txt-align-center flex-inline center txt-uppercase txt-medium margin-none">
+    Recently closed
+  </h2>
+
+  <section class="cards--grid">
+    <% if cards.any? %>
+      <%= render partial: "cards/display/preview", collection: cards, as: :card, cached: true %>
+    <% else %>
+      <p class="txt-medium translucent">Nothing here</p>
+    <% end %>
+  </section>
+</div>

@@ -1,0 +1,14 @@
+<div class="card-sorting__filter flex-inline">
+  <%= form_with url: cards_path, method: :get do |form| %>
+    <% filter.as_params.except(:indexed_by).each do |key, value| %>
+      <%= filter_hidden_field_tag key, value %>
+    <% end %>
+
+    <%= form.hidden_field :indexed_by, value: filter.indexed_by == "oldest" ? "newest" : "oldest" %>
+
+    <button class="btn borderless txt-medium">
+      <%= icon_tag filter.indexed_by == "oldest" ? "sort-ascending" : "sort-descending", size: 24, aria: { hidden: true } %>
+      <span class="for-screen-reader">Sort by <%= filter.indexed_by == "oldest" ? "newest" : "oldest" %></span>
+    </button>
+  <% end %>
+</div>

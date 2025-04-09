@@ -1,0 +1,34 @@
+<div class="quick-filter position-relative" data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
+  <button class="btn input input--select flex-inline txt-small" data-action="click->dialog#open:stop">
+    <span class="overflow-ellipsis">
+      <% if filter.collections.any? %>
+        <%= filter.collections.map(&:name).to_sentence %>
+      <% else %>
+        In Collection…
+      <% end %>
+    </span>
+  </button>
+
+  <dialog class="events__popup popup panel flex-column align-start gap-half fill-white shadow" data-dialog-target="dialog" data-action="turbo:before-cache@document->dialog#close">
+    <strong class="popup__title margin-block-start-half pad-inline-half">In Collection</strong>
+    <%= form_with url: cards_path, method: :get, class: "flex flex-column full-width popup__list",
+          data: { controller: "form" } do |form| %>
+      <% filter.as_params.except(:collection_ids).each do |key, value| %>
+        <%= filter_hidden_field_tag key, value %>
+      <% end %>
+
+      <% Current.user.collections.order(:name).each do |collection| %>
+        <div class="btn popup__item">
+          <%= form.check_box "collection_ids[]", {
+            checked: filter.collections.include?(collection),
+            data: { action: "change->form#submit" },
+            include_hidden: false,
+          }, collection.id %>
+
+          <%= form.label "collection_ids[]", collection.name, for: dom_id(collection, :filter), class: "overflow-ellipsis" %>
+          <%= icon_tag "check", class: "checked flex-item-justify-end" %>
+        </div>
+      <% end %>
+    <% end %>
+  </dialog>
+</div>

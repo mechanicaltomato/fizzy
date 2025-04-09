@@ -1,9 +1,0 @@
-<% if bubble.due_on.present? %>
-  <%= form_with model: bubble, url: bucket_bubble_path(bubble.bucket, bubble), data: { controller: "form" } do |form| %>
-    <label class="bubble__detail bubble__date">
-      <span class="for-screen-reader">Change the due date</span>
-      <span class="bubble__date-text"><%= html_escape bubble.due_on.strftime("%b <br> %d").html_safe %></span>
-      <%= form.date_field :due_on, class: "input input--hidden", data: { action: "change->form#submit click->form#showPicker" } %>
-    </label>
-  <% end %>
-<% end %>

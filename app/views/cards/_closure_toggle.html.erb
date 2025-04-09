@@ -1,0 +1,34 @@
+<div class="card__actions-container center border-radius flex-inline align-center justify-center gap" style="--card-color: <%= @card.color %>">
+  <% if card.closed? %>
+    <span class="card__closure-message">Completed by <%= card.closed_by.name %> on <%= local_datetime_tag(card.closed_at, style: :shortdate) %>.</span>
+    <%= button_to card_closure_path(card), method: :delete, class: "btn btn--plain borderless fill-transparent" do %>
+      <span>Un-do</span>
+    <% end %>
+  <% else %>
+    <div class="flex-inline center position-relative" data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
+      <button class="btn borderless" data-action="click->dialog#open:stop">
+        <span>Close as…</span>
+      </button>
+
+      <dialog class="popup panel flex-column align-start gap-half fill-white shadow" style="--row-gap: 0.2em;"
+          aria-label="Close as…" aria-description="Close this card and select a reason.."
+          data-dialog-target="dialog" data-action="turbo:before-cache@document->dialog#close">
+        <strong class="popup__title margin-block-start-half pad-inline-half">Close as…</strong>
+
+        <% Current.account.closure_reasons.labels.each do |label| %>
+          <%= button_to card_closure_path(card, reason: label), class: "btn popup__item full-width", form_class: "full-width" do %>
+            <span class="overflow-ellipsis"><%= label %></span>
+          <% end %>
+        <% end %>
+      </dialog>
+    </div>
+
+    <span class="card__closure-message">
+      <% if card.doing? %>
+        Returns to <em>Considering</em> if no activity <%= local_datetime_tag(card.auto_reconsider_at, style: :indays) -%>.
+      <% else %>
+        Auto-closes if no activity <%= local_datetime_tag(card.auto_close_at, style: :indays) -%>.
+      <% end %>
+    </span>
+  <% end %>
+</div>
