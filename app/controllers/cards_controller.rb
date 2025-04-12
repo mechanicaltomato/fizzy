@@ -15,7 +15,8 @@ class CardsController < ApplicationController
   end
 
   def create
-    redirect_to @collection.cards.create!
+    card = @collection.cards.create!
+    redirect_to card
   end
 
   def show
