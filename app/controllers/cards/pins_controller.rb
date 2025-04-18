@@ -5,21 +5,29 @@ class Cards::PinsController < ApplicationController
   end
 
   def create
-    pin = @card.pin_by Current.user
-    broadcast_add_to_tray pin
+    @pin = @card.pin_by Current.user
+
+    broadcast_add_pin_to_tray
+    render_pin_button_replacement
   end
 
   def destroy
-    pin = @card.unpin_by Current.user
-    broadcast_remove_from_tray pin
+    @pin = @card.unpin_by Current.user
+
+    broadcast_remove_pin_from_tray
+    render_pin_button_replacement
   end
 
   private
-    def broadcast_add_to_tray(pin)
-      pin.broadcast_prepend_to [ Current.user, :pins_tray ], target: "pins", partial: "my/pins/pin"
+    def broadcast_add_pin_to_tray
+      @pin.broadcast_prepend_to [ Current.user, :pins_tray ], target: "pins", partial: "my/pins/pin"
     end
 
-    def broadcast_remove_from_tray(pin)
-      pin.broadcast_remove_to [ Current.user, :pins_tray ]
+    def broadcast_remove_pin_from_tray
+      @pin.broadcast_remove_to [ Current.user, :pins_tray ]
+    end
+
+    def render_pin_button_replacement
+      turbo_stream.replace [ @card, :pin_button ], partial: "cards/pins/pin_button", locals: { card: @card }
     end
 end
