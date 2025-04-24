@@ -1,81 +1,99 @@
-<% @page_title = "Edit #{@collection.name}" %>
+<% @page_title = "Collection Settings" %>
 
 <% content_for :header do %>
   <nav>
     <%= link_to_back fallback_path: cards_path(collection_ids: [ @bbucket ]) %>
 
-    <%= form_with model: @collection, class: "flex-item-justify-end", method: :delete do |form| %>
-      <%= form.button class: "btn btn--negative", data: { turbo_confirm: "Are you sure you want to delete this?" } do %>
-        <%= icon_tag "minus" %>
-        <span class="for-screen-reader">Delete <%= @collection.name %></span>
-      <% end %>
-    <% end %>
+    <header class="center">
+      <h1 class="txt-large margin-none"><%= @page_title %></h1>
+    </header>
+
+    <div class="btn btn--placeholder flex-item-justify-end"></div>
   </nav>
 <% end %>
 
-<div class="panel shadow center" style="--panel-size: 55ch;">
-  <%= form_with model: @collection, class: "flex flex-column gap txt-large", data: { controller: "form" } do |form| %>
-    <div class="flex align-center gap">
-      <label class="flex-item-grow txt-large">
-        <strong><%= form.text_field :name, name: "collection[name]", class: "input full-width",
-              required: true, autofocus: true, placeholder: "Give it a name…",
-              data: { action: "keydown.enter->form#submit:prevent, keydown.esc->form#cancel" } %></strong>
-      </label>
-    </div>
+<section class="panels--two-up margin-block">
+  <div class="panel shadow center flex flex-column">
+    <strong class="txt-large">Name and access</strong>
+    <p class="margin-none-block-start">Choose who can access this Collection.</p>
+    <%= form_with model: @collection, class: "flex flex-column gap txt-large", data: { controller: "form" } do |form| %>
+      <div class="flex align-center gap">
+        <label class="flex-item-grow">
+          <strong><%= form.text_field :name, name: "collection[name]", class: "input full-width",
+                required: true, autofocus: true, placeholder: "Give it a name…",
+                data: { action: "keydown.enter->form#submit:prevent, keydown.esc->form#cancel" } %></strong>
+        </label>
+      </div>
 
-    <section class="margin-block pad-inline fill-shade border-radius">
-      <%= access_menu_tag @collection do %>
-        <li class="flex align-center gap margin-none">
-          <figure class="avatar flex-item-no-shrink" style="--avatar-border-radius: 0; --avatar-size: 4ch;">
-            <%= icon_tag "everyone" %>
-            <span class="for-screen-reader">Everyone</span>
-          </figure>
+      <section class="margin-block pad-inline fill-shade border-radius">
+        <%= access_menu_tag @collection do %>
+          <li class="flex align-center gap margin-none">
+            <figure class="avatar flex-item-no-shrink" style="--avatar-border-radius: 0; --avatar-size: 3.5ch; margin-inline: 0.3em;">
+              <%= icon_tag "everyone" %>
+              <span class="for-screen-reader">Everyone</span>
+            </figure>
 
-          <div class="min-width">
-            <div class="overflow-ellipsis fill-shade"><strong>Everyone</strong></div>
-          </div>
+            <div class="min-width">
+              <div class="overflow-ellipsis fill-shade"><strong>Everyone</strong></div>
+            </div>
 
-          <hr class="separator--horizontal flex-item-grow" style="--border-color: var(--color-subtle-dark); --border-style: dashed" aria-hidden="true" />
+            <hr class="separator--horizontal flex-item-grow" style="--border-color: var(--color-subtle-dark); --border-style: dashed" aria-hidden="true" />
 
-          <label for="collection_all_access" class="switch">
-            <%= form.check_box :all_access, class: "switch__input", checked: @collection.all_access?, data: { action: "change->toggle-class#toggle" } %>
-            <span class="switch__btn round"></span>
-            <span class="for-screen-reader">Give everyone access to this project</span>
-          </label>
-        </li>
+            <label for="collection_all_access" class="switch">
+              <%= form.check_box :all_access, class: "switch__input", checked: @collection.all_access?, data: { action: "change->toggle-class#toggle" } %>
+              <span class="switch__btn round"></span>
+              <span class="for-screen-reader">Give everyone access to this project</span>
+            </label>
+          </li>
 
-        <hr class="separator--horizontal full-width" style="--border-color: var(--color-subtle-dark);" aria-hidden="true" />
+          <hr class="separator--horizontal full-width" style="--border-color: var(--color-subtle-dark);" aria-hidden="true" />
 
-        <% if User.active.count > 20 %>
-          <input placeholder="Filter…" class="input input--transparent full-width" type="search" autocorrect="off" autocomplete="off" data-1p-ignore="true" data-action="input->filter#filter">
-        <% end %>
-
-        <div data-filter-target="list">
-          <%= access_toggles_for @selected_users, selected: true %>
-
-          <% if @selected_users.any? && @unselected_users.any? %>
-            <hr class="separator full-width" style="--border-style: solid">
+          <% if User.active.count > 20 %>
+            <input placeholder="Filter…" class="input input--transparent full-width" type="search" autocorrect="off" autocomplete="off" data-1p-ignore="true" data-action="input->filter#filter">
           <% end %>
 
-          <%= access_toggles_for @unselected_users, selected: false %>
-        </div>
+          <div data-filter-target="list">
+            <%= access_toggles_for @selected_users, selected: true %>
+
+            <% if @selected_users.any? && @unselected_users.any? %>
+              <hr class="separator full-width" style="--border-style: solid">
+            <% end %>
+
+            <%= access_toggles_for @unselected_users, selected: false %>
+          </div>
+        <% end %>
+      </section>
+
+      <button type="submit" id="log_in" class="btn btn--reversed center txt-normal">
+        <%= icon_tag "check" %>
+        <span>Save changes</span>
+      </button>
+
+      <%= link_to "Cancel and go back", cards_path(collection_ids: [ @collection ]), data: { form_target: "cancel", turbo_frame: "_top" }, hidden: true %>
+    <% end %>
+  </div>
+
+  <div class="panel shadow center flex flex-column">
+    <strong class="txt-large">Workflows</strong>
+    <p class="margin-none-block-start">Use a Workflow to track progress in this Collection.</p>
+    <%= form_with model: @collection, url: collection_workflow_path(@collection), local: true, method: :patch, data: { controller: "form" } do |form| %>
+      <%= form.select :workflow_id, Workflow.all.map { |w| [w.name, w.id] }, { include_blank: "Choose…" }, class: "input input--select full-width", data: { action: "change->form#submit" } %>
+    <% end %>
+    <p><%= link_to "Manage workflows", workflows_path, class: "btn btn--plain txt-link" %></p>
+
+    <hr class="separator--horizontal full-width margin-block-double" style="--border-color: var(--color-subtle);" aria-hidden="true" />
+
+    <strong class="txt-large">Auto-close Cards</strong>
+    <p class="margin-none-block-start">Cards Fizzle Out when there is no activity for…</p>
+    <%= select_tag :auto_close_after, options_for_select(Card::Closeable::AUTO_CLOSE_OPTIONS, Card::Closeable::AUTO_CLOSE_AFTER), { class: "input input--select full-width margin-block-end", data: { action: "change->form#submit" } } %>
+
+    <hr class="separator--horizontal full-width" style="--border-color: var(--color-subtle); margin-block-start: auto;" aria-hidden="true" />
+
+    <%= form_with model: @collection, class: "txt-align-center", method: :delete do |form| %>
+      <%= form.button class: "btn txt-negative borderless txt-small", data: { turbo_confirm: "Are you sure you want to permanently delete this Collection?" } do %>
+        <%= icon_tag "trash" %>
+        <span>Delete this Collection</span>
       <% end %>
-    </section>
-
-    <button type="submit" id="log_in" class="btn btn--reversed center txt-medium">
-      <%= icon_tag "check" %>
-      <span class="for-screen-reader">Save</span>
-    </button>
-
-    <%= link_to "Cancel and go back", cards_path(collection_ids: [ @collection ]), data: { form_target: "cancel", turbo_frame: "_top" }, hidden: true %>
-  <% end %>
-</div>
-
-<div class="panel shadow center flex flex-column gap-half margin-block-double" style="--panel-size: 55ch;">
-  <strong class="txt-large">Choose a workflow</strong>
-  <p class="margin-none">Use a workflow to track progress in this collection.</p>
-  <%= form_with model: @collection, url: collection_workflow_path(@collection), local: true, method: :patch, data: { controller: "form" } do |form| %>
-    <%= form.select :workflow_id, Workflow.all.map { |w| [w.name, w.id] }, { include_blank: "Choose…" }, class: "input input--select full-width", data: { action: "change->form#submit" } %>
-  <% end %>
-  <p><%= link_to "Manage workflows", workflows_path, class: "btn btn--plain txt-link" %></p>
-</div>
+    <% end %>
+  </div>
+</section>

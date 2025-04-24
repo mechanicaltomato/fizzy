@@ -1,6 +1,15 @@
 module Card::Closeable
   extend ActiveSupport::Concern
 
+  AUTO_CLOSE_OPTIONS = [
+    [ "30 days", 30.days ],
+    [ "60 days", 60.days ],
+    [ "90 days", 90.days ],
+    [ "6 months", 180.days ],
+    [ "1 year", 365.days ],
+    [ "Never", nil ]
+  ].freeze
+
   AUTO_CLOSE_AFTER = 30.days
 
   included do
