@@ -29,7 +29,7 @@
   </nav>
 <% end %>
 
-<div data-controller="beacon" data-card-id="<%= @card.id %>" data-beacon-url-value="<%= card_reading_url(@card) %>">
+<div data-controller="beacon" data-beacon-url-value="<%= card_reading_url(@card) %>">
   <%= render "cards/container", card: @card %>
 
   <% if @card.published? %>
