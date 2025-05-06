@@ -6,7 +6,6 @@ export default class extends Controller {
   // Actions
 
   focus() {
-    console.debug("CALLED!");
     this.inputTarget.focus()
   }
 }
