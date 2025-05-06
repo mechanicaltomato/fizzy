@@ -59,7 +59,7 @@
       transition: opacity 0.2s ease-in-out;
     }
 
-    @media (hover: hover) {
+    @media (any-hover: hover) {
       .card:hover & {
         img:not([src=""]) {
           opacity: 1;
@@ -269,43 +269,41 @@
   }
 
   .card__bubble {
-    --bubble-shape: 42% 72% 68% 43% / 53% 73% 45% 67%;
+    --bubble-color: radial-gradient(oklch(var(--lch-blue-medium) / 10%) 50%, oklch(var(--lch-blue-medium) / 50%) 100%);
+    --bubble-shape: 54% 46% 61% 39% / 57% 49% 51% 43%;
+    --bubble-rotate: 0deg;
     --size: 5cqi;
 
-    background:
-      radial-gradient(circle at 60% 40%,
-        oklch(var(--lch-ink-inverted)/80%) 0%,
-        oklch(var(--lch-ink-inverted)/0%) 40%),
-      radial-gradient(circle at 70% 70%,
-        oklch(var(--lch-red-medium)/40%) 0%,
-        oklch(var(--lch-purple-medium)/30%) 40%,
-        oklch(var(--lch-green-medium)/10%) 60%,
-        oklch(var(--lch-yellow-medium)/10%) 80%,
-        oklch(var(--lch-ink-inverted)/0%) 100%),
-      radial-gradient(circle at 30% 70%,
-        oklch(var(--lch-ink-inverted)/30%) 0%,
-        oklch(var(--lch-ink-inverted)/0%) 50%),
-      radial-gradient(circle at 50% 50%,
-        oklch(var(--lch-blue-medium)/50%) 0%,
-        oklch(var(--lch-pink-medium)/10%) 60%,
-        oklch(var(--lch-ink-inverted)/0%) 100%);
-    box-shadow: 0 0 4px 2px oklch(var(--lch-blue-medium)/0.2) inset;
     block-size: var(--size);
-    border-radius: var(--bubble-shape);
-    padding: 0.5cqi;
     container-type: inline-size;
     font-size: 1.75rem;
     font-weight: bold;
     inline-size: var(--size);
     inset: 50% auto auto -0.5ch;
+    padding: 0.5cqi;
     position: absolute;
     translate: -100% -50%;
 
+    &:before {
+      background: var(--bubble-color);
+      border-radius: var(--bubble-shape);
+      content: "";
+      inset: 0;
+      position: absolute;
+      transform: rotate(var(--bubble-rotate));
+    }
+
+    @media (any-hover: hover) {
+      &:hover:before {
+        animation: wobble 1200ms;
+      }
+    }
+
     span {
       display: grid;
-      inset: 0;
       font-size: 40cqi;
       font-weight: 900;
+      inset: 0;
       place-content: center;
       position: absolute;
       text-align: center;
@@ -317,8 +315,8 @@
       text-transform: uppercase;
     }
 
-    .card:nth-child(2n+1) & { --bubble-shape: 70% 72% 39% 80% / 74% 73% 64% 51%; }
-    .card:nth-child(3n+1) & { --bubble-shape: 45% 72% 65% 50% / 41% 73% 44% 72%; }
+    .card:nth-child(2n+1) & { --bubble-rotate: -90deg; }
+    .card:nth-child(3n+1) & { --bubble-rotate: 45deg; }
   }
 
   .card__bubble--today {
