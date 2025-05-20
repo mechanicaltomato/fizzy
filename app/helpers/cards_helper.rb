@@ -48,4 +48,12 @@ module CardsHelper
     title << "assigned to #{card.assignees.map(&:name).to_sentence}" if card.assignees.any?
     title.join(" ")
   end
+
+  def card_entropy_action(card)
+    if card.doing?
+      "Falls Back"
+    elsif card.considering?
+      "Closes"
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
+ActiveRecord::Schema[8.1].define(version: 2025_05_15_125505) do
   create_table "accesses", force: :cascade do |t|
     t.integer "collection_id", null: false
     t.datetime "created_at", null: false
@@ -163,10 +163,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
     t.datetime "created_at", null: false
     t.json "data", default: {}
     t.text "line"
+    t.integer "parent_id"
     t.string "type"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.index ["parent_id"], name: "index_commands_on_parent_id"
     t.index ["user_id", "created_at"], name: "index_commands_on_user_id_and_created_at"
+    t.index ["user_id", "parent_id", "created_at"], name: "index_commands_on_user_id_and_parent_id_and_created_at"
     t.index ["user_id"], name: "index_commands_on_user_id"
   end
 
@@ -269,6 +272,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
     t.index ["reacter_id"], name: "index_reactions_on_reacter_id"
   end
 
+# Could not dump table "search_embeddings_vector_chunks00" because of following StandardError
+#   Unknown type '' for column 'rowid'
+
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -291,6 +298,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
     t.datetime "created_at", null: false
     t.string "title"
     t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_tags_on_account_id_and_title", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -337,6 +345,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
   add_foreign_key "closures", "cards"
   add_foreign_key "closures", "users"
   add_foreign_key "collections", "workflows"
+  add_foreign_key "commands", "commands", column: "parent_id"
   add_foreign_key "commands", "users"
   add_foreign_key "comments", "cards"
   add_foreign_key "events", "collections"
@@ -357,4 +366,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_05_07_095113) do
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
   create_virtual_table "cards_search_index", "fts5", ["title"]
   create_virtual_table "comments_search_index", "fts5", ["body"]
+  create_virtual_table "search_embeddings", "vec0", ["id INTEGER PRIMARY KEY", "record_type TEXT NOT NULL", "record_id INTEGER NOT NULL", "embedding FLOAT[1536] distance_metric=cosine"]
 end

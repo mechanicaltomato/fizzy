@@ -1,17 +1,21 @@
 import { Controller } from "@hotwired/stimulus"
 import { HttpStatus } from "helpers/http_helpers"
+import { isMultiLineString } from "helpers/text_helpers";
+import { marked } from "marked"
 
 export default class extends Controller {
-  static targets = [ "input", "form", "confirmation" ]
-  static classes = [ "error", "confirmation", "help" ]
+  static targets = [ "input", "form", "output", "confirmation", "recentCommands" ]
+  static classes = [ "error", "confirmation", "help", "output", "busy" ]
+  static values = { originalInput: String, waitingForConfirmation: Boolean }
 
-  disconnect() {
-    if (this.waitingForConfirmation) { this.#reset() }
+  connect() {
+    if (this.waitingForConfirmationValue) { this.focus() }
   }
 
   // Actions
 
   focus() {
+    this.inputTarget.setSelectionRange(this.inputTarget.value.length, this.inputTarget.value.length)
     this.inputTarget.focus()
   }
 
@@ -21,27 +25,28 @@ export default class extends Controller {
       event.preventDefault()
       event.stopPropagation()
     } else {
-      this.hideHelpMenu()
+      this.#hideHelpMenu()
     }
   }
 
-  hideHelpMenu() {
-    if (this.#showHelpCommandEntered) { this.#reset() }
-    this.element.classList.remove(this.helpClass)
+  hideMenus() {
+    this.#hideHelpMenu()
+    this.#hideOutput()
   }
 
   handleKeyPress(event) {
-    if (this.waitingForConfirmation) {
+    if (this.waitingForConfirmationValue) {
       this.#handleConfirmationKey(event.key.toLowerCase())
       event.preventDefault()
     }
   }
 
   handleCommandResponse(event) {
+    const response = event.detail.fetchResponse?.response
+
     if (event.detail.success) {
-      this.#reset()
-    } else {
-      const response = event.detail.fetchResponse.response
+      this.#handleSuccessResponse(response)
+    } else if (response) {
       this.#handleErrorResponse(response)
     }
   }
@@ -58,50 +63,96 @@ export default class extends Controller {
     this.element.classList.remove(this.errorClass)
   }
 
-  get #showHelpCommandEntered() {
-    return [ "/help", "/?" ].includes(this.inputTarget.value)
+  commandSubmitted() {
+    this.element.classList.add(this.busyClass)
   }
 
-  #showHelpMenu() {
-    this.element.classList.add(this.helpClass)
+  #reset(inputValue = "") {
+    this.inputTarget.value = inputValue
+    this.confirmationTarget.value = ""
+    this.waitingForConfirmationValue = false
+    this.originalInputValue = null
+
+    this.element.classList.remove(this.errorClass)
+    this.element.classList.remove(this.confirmationClass)
+    this.element.classList.remove(this.busyClass)
+  }
+
+  get #showHelpCommandEntered() {
+    return [ "/help", "/?" ].includes(this.inputTarget.value)
   }
 
   get #isHelpMenuOpened() {
     return this.element.classList.contains(this.helpClass)
   }
 
+  #showHelpMenu() {
+    this.element.classList.add(this.helpClass)
+  }
+
+  #hideHelpMenu() {
+    if (this.#showHelpCommandEntered) { this.#reset() }
+    this.element.classList.remove(this.helpClass)
+  }
+
+  #handleSuccessResponse(response) {
+    if (response.headers.get("Content-Type")?.includes("application/json")) {
+      response.json().then((responseJson) => {
+        this.#handleJsonResponse(responseJson)
+      })
+    }
+    this.recentCommandsTarget.reload()
+    this.#reset()
+  }
+
   async #handleErrorResponse(response) {
     const status = response.status
-    const message = await response.text()
 
     if (status === HttpStatus.UNPROCESSABLE) {
       this.#showError()
     } else if (status === HttpStatus.CONFLICT) {
-      this.#requestConfirmation(message)
+      await this.#handleConflictResponse(response)
     }
-  }
-
-  #reset(inputValue = "") {
-    this.formTarget.reset()
-    this.inputTarget.value = inputValue
-    this.confirmationTarget.value = ""
-    this.waitingForConfirmation = false
-    this.originalInputValue = null
-
-    this.element.classList.remove(this.errorClass)
-    this.element.classList.remove(this.confirmationClass)
   }
 
   #showError() {
     this.element.classList.add(this.errorClass)
   }
 
-  async #requestConfirmation(message) {
+  async #handleConflictResponse(response) {
     this.originalInputValue = this.inputTarget.value
-    this.element.classList.add(this.confirmationClass)
-    this.inputTarget.value = `${message}? [Y/n] `
+    this.#handleJsonResponse(await response.json())
+  }
 
-    this.waitingForConfirmation = true
+  #handleJsonResponse(responseJson) {
+    const { confirmation, message, redirect_to } = responseJson
+
+    if (message) {
+      this.#showOutput(message)
+    }
+
+    if (confirmation) {
+      this.#requestConfirmation(confirmation)
+    }
+
+    if (redirect_to) {
+      Turbo.visit(redirect_to)
+    }
+  }
+
+  async #requestConfirmation(confirmationPrompt) {
+    this.element.classList.add(this.confirmationClass)
+    this.#showConfirmationPrompt(confirmationPrompt)
+    this.waitingForConfirmationValue = true
+  }
+
+  #showConfirmationPrompt(confirmationPrompt) {
+    if (isMultiLineString(confirmationPrompt)) {
+      this.#showOutput(confirmationPrompt)
+      this.inputTarget.value = `Apply these changes? [Y/n] `
+    } else {
+      this.inputTarget.value = `${confirmationPrompt}? [Y/n] `
+    }
   }
 
   #handleConfirmationKey(key) {
@@ -109,12 +160,25 @@ export default class extends Controller {
       this.#submitWithConfirmation()
     } else if (key === "escape" || key === "n") {
       this.#reset(this.originalInputValue)
+      this.#hideOutput()
     }
   }
 
   #submitWithConfirmation() {
     this.inputTarget.value = this.originalInputValue
     this.confirmationTarget.value = "confirmed"
+    this.#hideOutput()
     this.formTarget.requestSubmit()
+    this.#reset()
+  }
+
+  #showOutput(markdown) {
+    const html = marked.parse(markdown)
+    this.element.classList.add(this.outputClass)
+    this.outputTarget.innerHTML = html
+  }
+
+  #hideOutput(html) {
+    this.element.classList.remove(this.outputClass)
   }
 }

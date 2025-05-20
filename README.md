@@ -16,7 +16,6 @@ And then run the development server:
 
 You'll be able to access the app in development at http://development-tenant.fizzy.localhost:3006
 
-
 ## Running tests
 
 For fast feedback loops, unit tests can be run with:
@@ -27,6 +26,24 @@ The full continuous integration tests can be run with:
 
     bin/ci
 
+## Working with AI features
+
+To work on AI features you need the OpenAI API key stored in the development's credentials file. To decrypt the credentials,
+you need place the key in a file `config/credentials/development.key`. You can copy the file from One Password in
+"Fizzy - development.key".
+
+To get semantic searches working for existing data you need to calculate all the vector embeds:
+
+```ruby
+Card.find_each(&:refresh_search_embedding)
+Comment.find_each(&:refresh_search_embedding)
+```
+
+### Tests
+
+For testing OpenAI API requests, we use [VCR](https://github.com/vcr/vcr). If you want to test AI features exercising the API, you need to place the `config/credentials/test.key`
+that you can get from 1Password in "Fizzy - test.key". Then, when running tests that use Open AI API, you must either set the env variable VCR_RECORD=1
+or to add `vcr_record!` to the test. See `VcrTestHelper`.
 
 ## Deploying
 

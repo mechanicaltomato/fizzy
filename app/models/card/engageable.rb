@@ -2,6 +2,7 @@ module Card::Engageable
   extend ActiveSupport::Concern
 
   STAGNATED_AFTER = 30.days
+  AUTO_RECONSIDER_REMINDER_BEFORE = 7.days
 
   included do
     has_one :engagement, dependent: :destroy, class_name: "Card::Engagement"

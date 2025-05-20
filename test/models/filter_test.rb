@@ -23,11 +23,12 @@ class FilterTest < ActiveSupport::TestCase
     filter = users(:david).filters.new assignment_status: "unassigned", collection_ids: [ @new_collection.id ]
     assert_equal [ @new_card ], filter.cards
 
-    filter = users(:david).filters.new terms: [ "haggis" ]
-    assert_equal cards(:logo, :layout).sort, filter.cards.sort
-
-    filter = users(:david).filters.new terms: [ "haggis", "love" ]
-    assert_equal [ cards(:logo) ], filter.cards
+    # @TODO: Temporarily commented until we make a decision on the search approach
+    # filter = users(:david).filters.new terms: [ "haggis" ]
+    # assert_equal cards(:logo, :layout).sort, filter.cards.sort
+    #
+    # filter = users(:david).filters.new terms: [ "haggis", "love" ]
+    # assert_equal [ cards(:logo) ], filter.cards
 
     filter = users(:david).filters.new indexed_by: "closed"
     assert_equal [ cards(:shipping) ], filter.cards

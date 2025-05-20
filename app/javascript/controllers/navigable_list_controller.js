@@ -5,6 +5,10 @@ export default class extends Controller {
   static targets = [ "item" ]
   static values = { selectionAttribute: { type: String, default: "aria-current" } }
 
+  connect() {
+    this.selectLast()
+  }
+
   // Actions
 
   navigate(event) {

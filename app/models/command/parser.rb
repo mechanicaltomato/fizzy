@@ -10,7 +10,8 @@ class Command::Parser
   def parse(string)
     parse_command(string).tap do |command|
       command.user = user
-      command.line = string
+      command.line ||= string
+      command.context ||= context
     end
   end
 
@@ -25,10 +26,14 @@ class Command::Parser
         Command::GoToUser.new(user_id: assignee_from(command_name)&.id)
       when "/assign", "/assignto"
         Command::Assign.new(assignee_ids: assignees_from(command_arguments).collect(&:id), card_ids: cards.ids)
+      when "/insight"
+        Command::GetInsight.new(query: command_arguments.join(" "), card_ids: cards.ids)
       when "/clear"
         Command::ClearFilters.new(params: filter.as_params)
       when "/close"
         Command::Close.new(card_ids: cards.ids, reason: command_arguments.join(" "))
+      when "/visit"
+        Command::VisitUrl.new(url: command_arguments.first)
       when "/tag"
         Command::Tag.new(tag_title: tag_title_from(command_arguments.join(" ")), card_ids: cards.ids)
       else
@@ -60,7 +65,7 @@ class Command::Parser
       elsif card = single_card_from(string)
         Command::GoToCard.new(card_id: card.id)
       else
-        Command::Search.new(query: string, params: filter.as_params)
+        Command::Ai::Parser.new(context).parse(string)
       end
     end
 

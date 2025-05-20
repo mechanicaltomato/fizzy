@@ -164,6 +164,7 @@
   --color-marker: oklch(var(--lch-red-medium));
   --color-terminal-bg: oklch(var(--lch-blue-darkest));
   --color-terminal-text: oklch(var(--lch-green-medium));
+  --color-terminal-text-light: oklch(var(--lch-green-light));
 
   /* Colors: Cards */
   --color-card-default: oklch(var(--lch-blue-dark));
@@ -268,6 +269,8 @@
     --lch-pink-light: 40% 0.085 344;
     --lch-pink-lighter: 30% 0.03 346;
     --lch-pink-lightest: 25% 0.011 348;
+
+    --color-terminal-text-light: oklch(var(--lch-green-dark));
 
     --shadow: 0 0 0 1px oklch(var(--lch-black) / 0.42),
               0 .2em 1.6em -0.8em oklch(var(--lch-black) / 0.6),

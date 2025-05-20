@@ -1,5 +1,6 @@
 <%= turbo_frame_tag :recent_commands do %>
-  <ul class="terminal__menu flex-column txt-align-start margin-none margin-block-end unpad" aria-label="Recent commands"><%= render partial: "commands/command", collection: @commands %></ul>
-
-  <%= render "commands/help" %>
+  <div class="terminal__container">
+    <ul class="terminal__menu flex-column txt-align-start margin-none margin-block-end unpad" aria-label="Recent commands"><%= render partial: "commands/command", collection: @commands %></ul>
+    <%= render "commands/help" %>
+  </div>
 <% end %>

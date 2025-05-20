@@ -1,0 +1,63 @@
+@layer components {
+  .bubble {
+    --bubble-color: var(--card-color, oklch(var(--lch-blue-medium)));
+    --bubble-shape: 54% 46% 61% 39% / 57% 49% 51% 43%;
+    --bubble-rotate: 0deg;
+    --bubble-size-default: 4rem;
+
+    block-size: var(--bubble-size, var(--bubble-size-default));
+    color: var(--color-ink);
+    container-type: inline-size;
+    font-size: 1.7rem;
+    font-weight: bold;
+    inline-size: var(--bubble-size, var(--bubble-size-default));
+    padding: 0.5cqi;
+    position: absolute;
+    inset-block-start: 50%;
+
+    &:before {
+      background: radial-gradient(
+        color-mix(in srgb, var(--bubble-color) 8%, var(--color-canvas)) 50%,
+        color-mix(in srgb, var(--bubble-color) 48%, var(--color-canvas)) 100%
+      );
+      border-radius: var(--bubble-shape);
+      content: "";
+      inset: 0;
+      position: absolute;
+      transform: rotate(var(--bubble-rotate));
+      z-index: -1;
+    }
+
+    @media (any-hover: hover) {
+      &:hover:before {
+        animation: wobble 1200ms;
+      }
+    }
+
+    svg {
+      display: block;
+      letter-spacing: 0.1ch;
+      text-transform: uppercase;
+    }
+  }
+
+  .bubble__number {
+    display: grid;
+    font-size: 40cqi;
+    font-weight: 900;
+    inset: 0;
+    place-content: center;
+    position: absolute;
+    text-align: center;
+  }
+}
+
+.bubble--closing {
+  inset-inline-start: calc(-1 * var(--bubble-gap));
+  translate: -100% -50%;
+}
+
+.bubble--considering {
+  inset-inline-end: calc(-1 * var(--bubble-gap));
+  translate: 100% -50%;
+}

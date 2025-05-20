@@ -23,13 +23,9 @@ class Card::Eventable::SystemCommenter
     def comment_body
       case event.action
       when "card_assigned"
-        "Assigned to #{card.assignees.pluck(:name).to_sentence}."
+        "Assigned to #{event.assignees.pluck(:name).to_sentence}."
       when "card_unassigned"
-        if card.assignees.empty?
-          "Unassigned from #{event.assignees.pluck(:name).to_sentence}."
-        else
-          "Assigned to #{card.assignees.pluck(:name).to_sentence}."
-        end
+        "Unassigned from #{event.assignees.pluck(:name).to_sentence}."
       when "card_staged"
         "#{event.creator.name} moved this to '#{event.stage_name}'."
       when "card_closed"

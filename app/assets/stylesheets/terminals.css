@@ -7,31 +7,13 @@
     font-family: var(--font-mono);
     font-size: var(--text-normal);
     inset: auto 0 0 0;
-    padding: var(--block-space) calc(var(--tray-size) + var(--inline-space) * 3);
+    padding: var(--block-space) calc(var(--tray-size) + var(--inline-space-double));
     position: fixed;
     z-index: var(--z-terminal);
 
     @media (prefers-color-scheme: dark) {
       background-color: var(--color-black);
       border-block-start: 1px solid var(--color-ink-lighter);
-    }
-
-    .terminal__input {
-      --input-border-color: transparent;
-      --input-border-radius: 0.3em;
-      --hover-color: transparent;
-      --input-color: var(--color-terminal-text);
-      --outline-size: 0;
-      --outline-color: transparent;
-
-      accent-color: var(--color-terminal-text);
-      caret-color: var(--color-terminal-text);
-      font-family: inherit;
-
-      &::placeholder {
-        color: oklch(var(--lch-green-light));
-        opacity: 0.5;
-      }
     }
   }
 
@@ -62,17 +44,9 @@
     transition: unset;
   }
 
-  .terminal__menu {
-    display: none;
-    list-style: none;
-
-    .terminal--open & {
-      display: flex;
-    }
-
-    .terminal--showing-help & {
-      display: none;
-    }
+  .terminal__container {
+    max-block-size: calc(100vh - var(--btn-size) - var(--block-space));
+    overflow: auto;
   }
 
   .terminal__help {
@@ -119,6 +93,57 @@
     }
   }
 
+  .terminal__input:is(.input) {
+    --input-border-color: transparent;
+    --input-border-radius: 0.3em;
+    --hover-color: transparent;
+    --input-color: var(--color-terminal-text);
+    --outline-size: 0;
+    --outline-color: transparent;
+
+    accent-color: var(--color-terminal-text);
+    caret-color: var(--color-terminal-text);
+    font-family: inherit;
+
+    &::placeholder {
+      color: var(--color-terminal-text-light);
+      opacity: 0.5;
+    }
+
+    &:focus::placeholder {
+      opacity: 0.7;
+    }
+    
+    .terminal--confirmation & {
+      color: var(--color-terminal-text-light);
+    }
+
+    .terminal--error & {
+      accent-color: var(--color-negative);
+      caret-color: var(--color-negative);
+      color: var(--color-negative);
+    }
+  }
+
+  .terminal__label {
+    .terminal--busy:is(:not(.terminal--confirmation)) & {
+      animation: pulse 1s infinite;
+    }
+  }
+
+  .terminal__menu {
+    display: none;
+    list-style: none;
+
+    .terminal--open & {
+      display: flex;
+    }
+
+    .terminal--showing-help & {
+      display: none;
+    }
+  }
+
   .terminal__item {
     &[aria-current] {
       --btn-color: var(--color-terminal-bg);
@@ -139,9 +164,25 @@
     }
   }
 
-  .terminal--error .terminal__input {
-    accent-color: var(--color-negative);
-    caret-color: var(--color-negative);
-    color: var(--color-negative);
+  .terminal__output {
+    display: none;
+
+    .terminal--confirmation & {
+      color: var(--color-terminal-text-light);
+    }
+
+    .terminal--showing-output & {
+      display: block;
+    }
+
+    p {
+      + ul {
+        margin-block-start: 0;
+      }
+
+      &:has(+ ul) {
+        margin-block-end: 0;
+      }
+    }
   }
 }

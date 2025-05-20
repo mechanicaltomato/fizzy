@@ -8,7 +8,7 @@ class Command::Assign < Command
   def title
     assignee_description = assignees.collect(&:first_name).join(", ")
 
-    "Assign #{assignee_description} to #{cards_description}"
+    "Assign #{cards_description} to #{assignee_description}"
   end
 
   def execute

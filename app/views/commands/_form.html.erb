@@ -4,8 +4,7 @@
       data: {
         controller: "form",
         terminal_target: "form",
-        turbo_permanent: true,
-        action: "turbo:submit-end->terminal#focus keydown.meta+k@document->terminal#focus keydown.enter->terminal#executeCommand keydown.esc->terminal#hideHelpMenu turbo:submit-end->terminal#handleCommandResponse"
+        action: "turbo:submit-start->terminal#commandSubmitted turbo:submit-end->terminal#focus keydown.meta+k@document->terminal#focus keydown.enter->terminal#executeCommand keydown.esc->terminal#hideMenus turbo:submit-end->terminal#handleCommandResponse"
       } do %>
   <label class="terminal__label txt-nowrap" for="fizzy_do">Fizzy do &gt;</label>
 
@@ -18,7 +17,7 @@
           terminal_target: "input",
           action: "keydown.up->toggle-class#add:prevent keydown.up->navigable-list#selectCurrentOrLast terminal#hideError"
         },
-        placeholder: "Press ⌘+K to search or type /commands…",
+        placeholder: "Press ⌘+K to search or type commands…",
         spellcheck: "false" %>
 
   <%=  hidden_field_tag "confirmed", nil, data: { terminal_target: "confirmation" } %>
