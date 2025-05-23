@@ -1,0 +1,23 @@
+<% size = local_assigns[:in_gallery] ? [800, 600] : [1024, 768] %>
+
+<% if blob.video? %>
+  <%= tag.video \
+            src: rails_blob_path(blob),
+            controls: true,
+            preload: :none,
+            width: "100%", height: "100%" %>
+<% elsif blob.audio? %>
+  <audio controls="true" width="100%" preload="metadata">
+    <source src="<%= rails_blob_url(blob) %>" type="<%= blob.content_type %>">
+  </audio>
+<% elsif blob.content_type == "application/pdf" %>
+  <embed src="<%= rails_blob_url(blob) %>" width="1024" height="768" type="application/pdf">
+<% elsif blob.variable? %>
+  <%= image_tag url_for(blob.variant(loader: { n: -1 }, resize_to_limit: size)) %>
+<% elsif blob.previewable? %>
+  <%= image_tag url_for(blob.preview(resize_to_limit: size)) %>
+<% else %>
+  <div class="attachment__figure">
+    <%= file_extension_for(blob) %>
+  </div>
+<% end %>
