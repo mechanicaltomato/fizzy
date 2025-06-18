@@ -8,6 +8,10 @@ module Launchpad
     url product_account_path("/signin", product: product, account: account), params
   end
 
+  def authentication_url(**params)
+    url "/authenticate", params.merge(product: :fizzy)
+  end
+
   def product_account_path(path = nil, product: false, account: nil)
     product_path = "/fizzy" if product || account
     account_path = "/#{account.signal_account.id}" if account

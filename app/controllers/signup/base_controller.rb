@@ -1,0 +1,30 @@
+class Signup::BaseController < ApplicationController
+  require_untenanted_access
+
+  attr_reader :authenticated_identity
+
+  private
+    def signup_storage
+      session[:signup] ||= {}
+    end
+
+    def reset_signup_storage
+      session.delete(:signup)
+    end
+
+    def authenticated_identity=(identity)
+      @authenticated_identity = identity
+      signup_storage["identity_id"] = identity.try(:id)
+    end
+
+    def set_authenticated_identity
+      if identity_id = signup_storage["identity_id"]
+        @authenticated_identity = SignalId::Identity.find_by(id: identity_id)
+      end
+    end
+
+    def redirect_to_account(account)
+      redirect_to account.signal_account.owner.remote_login_url(proceed_to: root_path),
+                  allow_other_host: true
+    end
+end

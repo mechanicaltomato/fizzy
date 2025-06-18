@@ -10,6 +10,16 @@ class SignupTest < ActiveSupport::TestCase
     )
   end
 
+  test "#to_h allows persistence of the signup data" do
+    actual = @signup.to_h
+    expected = {
+      email_address: @signup.email_address,
+      full_name: @signup.full_name,
+      company_name: @signup.company_name
+    }
+    assert_equal expected, actual
+  end
+
   test "#process creates all the necessary objects for a new identity" do
     Account.any_instance.expects(:setup_basic_template).once
 

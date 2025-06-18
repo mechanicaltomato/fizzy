@@ -1,5 +1,5 @@
-class Signup::AccountsController < ApplicationController
-  require_untenanted_access
+class Signup::AccountsController < Signup::BaseController
+  before_action :reset_signup_storage
 
   def new
     @signup = Signup.new
@@ -8,7 +8,10 @@ class Signup::AccountsController < ApplicationController
   def create
     @signup = Signup.new(signup_params)
 
-    if @signup.process
+    if @signup.recognized?
+      store_signup
+      redirect_to Launchpad.authentication_url(purpose: "signup", login_hint: @signup.email_address, redirect_uri: signup_session_url), allow_other_host: true
+    elsif @signup.process
       redirect_to_account(@signup.account)
     else
       render :new, status: :unprocessable_entity
@@ -17,11 +20,10 @@ class Signup::AccountsController < ApplicationController
 
   private
     def signup_params
-      params.require(:signup).permit(:full_name, :email_address, :password, :company_name)
+      params.require(:signup).permit(*Signup::PERMITTED_KEYS)
     end
 
-    def redirect_to_account(account)
-      redirect_to account.signal_account.owner.remote_login_url(proceed_to: root_path),
-                  allow_other_host: true
+    def store_signup
+      @signup.to_h.each { |key, value| signup_storage[key.to_s] = value }
     end
 end

@@ -3,6 +3,8 @@ class Signup
   include ActiveModel::Attributes
   include ActiveModel::Validations
 
+  PERMITTED_KEYS = %i[ full_name email_address password company_name ]
+
   # Input attribute
   attr_accessor :company_name
 
@@ -18,6 +20,10 @@ class Signup
   validate :validate_new_identity
 
   def initialize(...)
+    @full_name = nil
+    @email_address = nil
+    @password = nil
+    @company_name = nil
     @signal_identity = nil
     @queenbee_account = nil
     @account = nil
@@ -44,8 +50,20 @@ class Signup
     false
   end
 
+  def recognized?
+    SignalId::Identity.find_by_email_address(email_address).present?
+  end
+
   def tenant_name
     @tenant_name ||= signal_account.subdomain
+  end
+
+  def to_h
+    {
+      full_name:      full_name,
+      email_address:  email_address,
+      company_name:   company_name
+    }.compact_blank
   end
 
   private
