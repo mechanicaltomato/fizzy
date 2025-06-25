@@ -304,7 +304,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_06_25_073215) do
     t.datetime "created_at", null: false
     t.string "terms", limit: 2000, null: false
     t.datetime "updated_at", null: false
-    t.index ["terms"], name: "index_search_queries_on_terms"
+    t.integer "user_id", null: false
+    t.index ["user_id", "terms"], name: "index_search_queries_on_user_id_and_terms"
+    t.index ["user_id"], name: "index_search_queries_on_user_id"
   end
 
   create_table "search_results", force: :cascade do |t|
@@ -394,6 +396,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_06_25_073215) do
   add_foreign_key "notifications", "users", column: "creator_id"
   add_foreign_key "pins", "cards"
   add_foreign_key "pins", "users"
+  add_foreign_key "search_queries", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "taggings", "cards"
   add_foreign_key "taggings", "tags"
