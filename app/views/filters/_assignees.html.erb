@@ -24,7 +24,7 @@
           <%= hidden_field_tag :expand_all, @expand_all %>
         <% end %>
 
-        <%= link_to cards_path(filter.as_params.except(:assignee_ids, :assignment_status)), class: "btn popup__item" do %>
+        <%= link_to cards_path(filter.as_params.except(:assignee_ids, :assignment_status).merge(expand_all: @expand_all)), class: "btn popup__item" do %>
           <span class="overflow-ellipsis">Clear all</span>
         <% end %>
 
