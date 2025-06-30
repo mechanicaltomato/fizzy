@@ -1,12 +1,12 @@
 <% if Current.user.collections.one? %>
-  <%= link_to cards_path(filter.as_params.except(:collection_ids)), class: "popup__group flex align-center", data: { value: "all collections", filter_target: "item", navigable_list_target: "item" } do %>
+  <%= link_to cards_path(filter.as_params.except(:collection_ids)), class: "popup__group flex align-center", data: { filter_text_value: "all collections", filter_target: "item", navigable_list_target: "item" } do %>
     <%= tag.div class: "btn popup__item min-width flex-item-grow" do %>
       <span class="overflow-ellipsis"><%= Current.user.collections.first.name %></span>
       <span class="txt-ink translucent flex-item-no-shrink flex-item-justify-end"><span class="txt-x-small txt-uppercase">GO TO</span> ›</span>
     <% end %>
   <% end %>
 <% elsif Current.user.collections.many? %>
-  <div class="popup__group flex align-center" data-filter-target="item" data-navigable-list-target="item">
+  <div class="popup__group flex align-center" data-filter-text-value="all collections" data-filter-target="item" data-navigable-list-target="item">
     <%= link_to events_path(clear_filter: true), class: "btn txt-xx-small flex-item-no-shrink" do %>
       <%= check_box_tag "filter_collections", nil, filter.collections.blank?, class: "form-checkbox" %>
       <span class="for-screen-reader">

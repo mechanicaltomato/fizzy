@@ -14,7 +14,7 @@
 
     <ul class="popup__list" data-filter-target="list">
       <% @collection.users.active.alphabetically.each do |user| %>
-        <li class="popup__group flex align-center full-width" data-value="<%= user.name.downcase %>" data-filter-target="item" data-navigable-list-target="item">
+        <li class="popup__group flex align-center full-width" data-filter-text-value="<%= filterable_name(user.name) %>" data-filter-target="item" data-navigable-list-target="item">
           <%= button_to card_assignments_path(@card, params: { assignee_id: user.id }), method: :post,
               class: "btn popup__item min-width flex-item-grow full-width unpad-inline",
               form_class: "max-width flex-item-grow" do %>

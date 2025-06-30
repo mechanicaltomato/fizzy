@@ -1,4 +1,4 @@
-<li class="flex align-center gap-half pad-inline" data-filter-target="item" data-value="<%= user.name.downcase %>">
+<li class="flex align-center gap-half pad-inline" data-filter-target="item" data-filter-text-value="<%= filterable_name(user.name) %>">
   <%= avatar_tag user, class: "flex-item-no-shrink" %>
 
   <strong class="overflow-ellipsis">

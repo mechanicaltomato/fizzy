@@ -1,5 +1,5 @@
 <strong class="popup__group-title">Saved filters</strong>
-<div class="popup__group flex align-center full-width gap-half overflow-ellipsis" data-navigable-list-target="item">
+<div class="popup__group flex align-center full-width gap-half overflow-ellipsis" data-navigable-list-target="item" data-filter-text-value="create a new filter" data-filter-target="item">
   <%= link_to cards_path(expand_all: true), class: "btn popup__new popup__item" do %>
     <%= icon_tag "bookmark" %>
     <div class="flex flex-column txt-tight-lines min-width txt-small">
@@ -9,7 +9,7 @@
   <% end %>
 </div>
 <% @filters.each do |filter| %>
-  <div class="popup__group flex align-center full-width gap-half overflow-ellipsis" data-navigable-list-target="item">
+  <div class="popup__group flex align-center full-width gap-half overflow-ellipsis" data-filter-text-value="<%= filterable_name(filter.summary) %>" data-filter-target="item" data-navigable-list-target="item">
     <%= link_to cards_path(filter_id: filter.id), class: "btn popup__new popup__item" do %>
       <%= icon_tag "bookmark" %>
       <div class="flex flex-column txt-tight-lines min-width txt-small">

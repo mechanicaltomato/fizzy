@@ -1,4 +1,4 @@
-<li class="popup__group flex align-center" data-value="<%= collection.name.downcase %>" data-filter-target="item" data-navigable-list-target="item">
+<li class="popup__group flex align-center" data-filter-text-value="<%= filterable_name(collection.name) %>" data-filter-target="item" data-navigable-list-target="item">
   <label class="btn txt-xx-small">
     <%= form.check_box "collection_ids[]", {
           checked: filter.collections.include?(collection),

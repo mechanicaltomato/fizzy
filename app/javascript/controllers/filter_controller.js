@@ -10,7 +10,7 @@ export default class extends Controller {
 
   filter() {
     this.itemTargets.forEach(item => {
-      if (item.innerText.toLowerCase().includes(this.inputTarget.value.toLowerCase())) {
+      if (item.dataset.filterTextValue.toLowerCase().includes(this.inputTarget.value.toLowerCase())) {
         item.removeAttribute("hidden")
       } else {
         item.toggleAttribute("hidden", true)

@@ -15,7 +15,7 @@
 
     <ul class="popup__list" data-filter-target="list">
       <% @tags.each do |tag| %>
-        <li class="popup__group flex align-center full-width" data-value="<%= tag.hashtag.downcase %>" data-filter-target="item" data-navigable-list-target="item">
+        <li class="popup__group flex align-center full-width" data-filter-text-value="<%= filterable_name(tag.hashtag) %>" data-filter-target="item" data-navigable-list-target="item">
           <%= button_to card_taggings_path(@card, params: { tag_title: tag.title }), method: :post,
               class: "btn popup__item min-width flex-item-grow full-width unpad-inline",
               form_class: "max-width flex-item-grow" do %>

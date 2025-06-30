@@ -21,7 +21,7 @@
 
         <ul class="popup__list margin-block-start-half margin-none-block-end" data-filter-target="list">
           <% Current.user.collections.alphabetically.each do |collection| %>
-            <li class="popup__group flex align-center full-width" data-value="<%= collection.name.downcase %>" data-filter-target="item" data-navigable-list-target="item">
+            <li class="popup__group flex align-center full-width" data-filter-text-value="<%= filterable_name(collection.name) %>" data-filter-target="item" data-navigable-list-target="item">
               <%= button_to card_collection_path(card, params: { collection_id: collection.id }), method: :patch,
                   class: "btn popup__item min-width flex-item-grow full-width unpad-inline",
                   form_class: "max-width flex-item-grow" do %>

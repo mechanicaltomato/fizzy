@@ -2,14 +2,14 @@
 <%= form_with url: cards_path, method: :get, class: "popup__list",
       data: { controller: "form" } do |form| %>
   <% if Current.user.collections.one? %>
-    <%= link_to cards_path, class: "popup__group flex align-center", data: { value: Current.user.collections.first.name.downcase, filter_target: "item", navigable_list_target: "item" } do %>
+    <%= link_to cards_path, class: "popup__group flex align-center", data: { filter_text_value: filterable_name(Current.user.collections.first.name), filter_target: "item", navigable_list_target: "item" } do %>
       <%= tag.div class: "btn popup__item min-width flex-item-grow" do %>
         <span class="overflow-ellipsis"><%= Current.user.collections.first.name %></span>
         <span class="txt-ink translucent flex-item-no-shrink flex-item-justify-end"><span class="txt-x-small txt-uppercase">GO TO</span> ›</span>
       <% end %>
     <% end %>
   <% elsif Current.user.collections.many? %>
-    <%= link_to cards_path, class: "popup__group flex align-center", data: { value: "all collections", filter_target: "item", navigable_list_target: "item" } do %>
+    <%= link_to cards_path, class: "popup__group flex align-center", data: { filter_text_value: "all collections", filter_target: "item", navigable_list_target: "item" } do %>
       <label class="btn txt-xx-small flex-item-no-shrink">
         <input type="checkbox">
 
@@ -25,7 +25,7 @@
     <% end %>
 
     <% Current.user.collections.ordered_by_recently_accessed.each do |collection| %>
-      <li class="popup__group flex align-center" data-value="<%= collection.name.downcase %>" data-filter-target="item" data-navigable-list-target="item">
+      <li class="popup__group flex align-center" data-filter-text-value="<%= filterable_name(collection.name) %>" data-filter-target="item" data-navigable-list-target="item">
         <label class="btn txt-xx-small flex-item-no-shrink">
           <%= form.check_box "collection_ids[]", {
                 checked: collection == @collection,
