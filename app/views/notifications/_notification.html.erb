@@ -10,9 +10,9 @@
         <%= avatar_image_tag notification.creator %>
       </div>
 
-      <div class="flex flex-column min-width flex-item-grow">
+      <h3 class="flex flex-column min-width flex-item-grow font-weight-normal">
         <%= render "notifications/notification/#{notification.source_type.underscore}/body", notification: notification %>
-      </div>
+      </h3>
     </div>
   <% end %>
 <% end %>
