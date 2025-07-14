@@ -31,6 +31,8 @@ gem "actiontext-lexical", bc: "actiontext-lexical"
 gem "image_processing", "~> 1.14"
 gem "platform_agent"
 gem "aws-sdk-s3", require: false
+gem "web-push"
+gem "net-http-persistent"
 
 # 37id and Queenbee integration
 gem "signal_id", bc: "signal_id", branch: "rails4"
