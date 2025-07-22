@@ -7,9 +7,10 @@ class Admin::PromptSandboxesController < AdminController
   end
 
   def create
-    cookies[:prompt] = params[:prompt]
-    day = Time.zone.parse(params[:day])
-    redirect_to admin_prompt_sandbox_path(day: day.to_date)
+    @prompt = params[:prompt]
+    cookies[:prompt] = @prompt
+    @summary, @summarizable_content = summarize(@day_timeline, @prompt)
+    render :show
   end
 
   private
