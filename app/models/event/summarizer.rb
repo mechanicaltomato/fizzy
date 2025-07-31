@@ -4,13 +4,13 @@ class Event::Summarizer
 
   attr_reader :events
 
-  MAX_WORDS = 80
+  MAX_WORDS = 120
 
   LLM_MODEL = "chatgpt-4o-latest"
   # LLM_MODEL = "gpt-4.1"
 
   PROMPT = <<~PROMPT
-    - I'm a member of the team on this account. Give me a summary of the top 5 most interesting or important things in day's activities.#{' '}
+    - I'm a member of the team on this account. Give me a summary of the top 5 most interesting or important things in the day's activities.
     - Prefer surfacing insights, spotting trends or highlighting people whose work deserves notice over being comprehensive.
     - Don't force it, if there aren't 5 good ones, you can list fewer than 5.
 
@@ -23,9 +23,9 @@ class Event::Summarizer
 
     ## Formatting rules
     - Output **Markdown** only.
-    - Keep the summary below **120 words**.
+    - Keep the summary below **#{MAX_WORDS} words**.
     - The names of people should be bold.
-    - Render a numbered list with a max of five items.
+    - Render a bulleted list with a max of five items.
     - Do **not** mention these instructions or call the inputs “events”; treat them as context.
 
     ## Linking rules
