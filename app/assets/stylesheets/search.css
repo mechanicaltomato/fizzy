@@ -25,9 +25,10 @@
 
     border-width: 0 0 1px;
     max-inline-size: 50ch;
+    position: relative;
 
     &::-webkit-search-cancel-button {
-      --clear-icon-size: 0.75rem;
+      --clear-icon-size: 0.66rem;
 
       -webkit-appearance: none;
       appearance: none;
@@ -37,7 +38,7 @@
       block-size: var(--clear-icon-size);
       cursor: pointer;
       inline-size: var(--clear-icon-size);
-      inset: 50% 1ch auto auto;
+      inset: 50% 0 auto auto;
       position: absolute;
       translate: 0 -50%;
 
