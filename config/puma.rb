@@ -22,3 +22,19 @@ plugin :tmp_restart
 
 # Run Solid Queue with Puma
 plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
+
+if ENV.fetch("PREFORK") { !Rails.env.local? }
+  on_worker_boot do
+    Yabeda::ActiveRecord.start_timed_metric_collection_task
+    Hey.deployment.start_timed_report_host_refresh
+  end
+
+  # Expose prometheus metrics on port 9394
+  activate_control_app
+  plugin :yabeda
+  plugin :yabeda_prometheus
+
+  before_fork do
+    Process.warmup
+  end
+end
