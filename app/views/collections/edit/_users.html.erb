@@ -20,6 +20,14 @@
 
   <input placeholder="Filter…" class="input input--transparent full-width" type="search" autocorrect="off" autocomplete="off" data-1p-ignore="true" data-filter-target="input" data-action="input->filter#filter">
 
+  <div class="toggler__visible-when-off">
+    <div class="flex align-center justify-end gap-half">
+      <button type="button" class="btn btn--plain txt-x-small txt-link font-weight-normal" data-action="click->toggle-class#checkAll">Select all</button>
+      <span class="txt-subtle">&middot;</span>
+      <button type="button" class="btn btn--plain txt-x-small txt-link font-weight-normal" data-action="click->toggle-class#checkNone">Select none</button>
+    </div>
+  </div>
+
   <ul class="settings__user-list" data-filter-target="list">
     <%= access_toggles_for selected_users, selected: true %>
     <%= access_toggles_for unselected_users, selected: false %>

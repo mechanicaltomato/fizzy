@@ -20,8 +20,11 @@ class CollectionsController < ApplicationController
   def update
     @collection.update! collection_params
     @collection.accesses.revise granted: grantees, revoked: revokees if grantees_changed?
-
-    redirect_to edit_collection_path(@collection), notice: "Saved"
+    if @collection.accessible_to?(Current.user)
+      redirect_to edit_collection_path(@collection), notice: "Saved"
+    else
+      redirect_to root_path, notice: "Saved (you were removed from the collection)"
+    end
   end
 
   def destroy

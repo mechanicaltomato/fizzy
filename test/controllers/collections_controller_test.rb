@@ -34,15 +34,27 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
         auto_close_period: 1.day,
         auto_reconsider_period: 2.days
       },
-      user_ids: users(:david, :jz).pluck(:id)
+      user_ids: users(:kevin, :jz).pluck(:id)
     }
 
     assert_redirected_to edit_collection_path(collections(:writebook))
     assert_equal "Writebook bugs", collections(:writebook).reload.name
-    assert_equal users(:david, :jz).sort, collections(:writebook).users.sort
+    assert_equal users(:kevin, :jz).sort, collections(:writebook).users.sort
     assert_equal 1.day, entropy_configurations(:writebook_collection).auto_close_period
     assert_equal 2.days, entropy_configurations(:writebook_collection).auto_reconsider_period
     assert_not collections(:writebook).all_access?
+  end
+
+  test "update redirects to root when user removes themselves from collection" do
+    collection = collections(:writebook)
+
+    patch collection_path(collection), params: {
+      collection: { name: "Updated name", all_access: false },
+      user_ids: users(:david, :jz).pluck(:id)
+    }
+
+    assert_redirected_to root_path
+    assert_not collection.reload.users.include?(users(:kevin))
   end
 
   test "update collection with granular permissions, submitting no user ids" do
