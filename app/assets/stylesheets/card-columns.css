@@ -8,7 +8,7 @@
     --column-gap: 8px;
     --column-width-collapsed: 40px;
     --column-width-expanded: 450px;
-    --column-transition: 350ms var(--ease-out-expo);
+    --column-transition: 200ms ease-out;
     --progress-increment: var(--progress-max-height) / var(--progress-max-cards);
     --progress-max-cards: 20;
     --progress-max-height: 50dvh;
@@ -74,7 +74,7 @@
     }
 
     &.is-collapsed {
-      border-radius: 99rem;
+      border-radius: calc(var(--column-width-collapsed) / 2);
       flex: 0 0 var(--column-width-collapsed);
       inline-size: var(--column-width-collapsed);
       min-inline-size: 0;
@@ -146,7 +146,6 @@
     gap: 0.5ch;
     position: relative;
     text-transform: uppercase;
-    transition: 100ms ease-out;
 
     @media (any-hover: hover) {
       &:hover {
@@ -217,6 +216,12 @@
 
     .cards.is-collapsed & {
       writing-mode: vertical-rl;
+    }
+
+    .cards:not(.is-collapsed) & {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

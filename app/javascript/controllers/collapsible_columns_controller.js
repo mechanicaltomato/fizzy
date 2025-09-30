@@ -27,9 +27,6 @@ export default class extends Controller {
     } else {
       this.#collapse(column)
     }
-
-    console.log("TOGGLE")
-    console.log(localStorage)
   }
 
   #collapseAllExcept(clickedColumn) {
