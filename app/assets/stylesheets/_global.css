@@ -76,6 +76,7 @@
   /* Z-index */
   --z-events-column-header: 1;
   --z-events-day-header: 3;
+  --z-flash: 12;
   --z-nav: 11;
   --z-popup: 10;
   --z-terminal: 20;
