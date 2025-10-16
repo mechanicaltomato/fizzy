@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { debounce, nextFrame } from "helpers/timing_helpers";
 
 export default class extends Controller {
-  static targets = [ "cancel", "submit" ]
+  static targets = [ "cancel", "submit", "input" ]
 
   static values = {
     debounceTimeout: { type: Number, default: 300 }
@@ -14,6 +14,17 @@ export default class extends Controller {
 
   submit() {
     this.element.requestSubmit()
+  }
+
+  preventEmptySubmit(event) {
+    const input = this.hasInputTarget ? this.inputTarget : null
+
+    if (input) {
+      const value = (input.value || "").trim()  
+      if (value.length === 0) {
+        event.preventDefault()
+      }
+    }
   }
 
   debouncedSubmit(event) {
