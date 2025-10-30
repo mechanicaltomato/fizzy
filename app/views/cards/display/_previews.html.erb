@@ -1,1 +1,1 @@
-<%= render partial: "cards/display/preview", collection: collection, as: :card, locals: { draggable: local_assigns.fetch(:draggable, false) }, cached: ->(card) { card_preview_cache_parts(card) } %>
+<%= render partial: "cards/display/preview", collection: cards, as: :card, locals: { draggable: local_assigns.fetch(:draggable, false) }, cached: ->(card) { card_preview_cache_parts(card) } %>

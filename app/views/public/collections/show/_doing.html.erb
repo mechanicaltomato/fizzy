@@ -4,7 +4,7 @@
   </h2>
 
   <% if page.used? %>
-    <%= render "cards/display/public_previews", collection: page.records %>
+    <%= render "cards/display/public_previews", cards: page.records %>
 
     <% unless page.last? %>
       <div class="full-width">

@@ -20,7 +20,7 @@
 <%= turbo_frame_tag :cards_container do %>
   <section class="cards cards--grid">
     <%= with_automatic_pagination :cards_paginated_container, @page do %>
-      <%= render "cards/display/previews", collection: @page.records, draggable: true %>
+      <%= render "cards/display/previews", cards: @page.records, draggable: true %>
     <% end %>
   </section>
 <% end %>
