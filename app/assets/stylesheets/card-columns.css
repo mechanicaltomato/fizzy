@@ -208,6 +208,10 @@
       z-index: -1;
     }
 
+    .no-transitions &:after {
+      transition: none;
+    }
+
     .cards.is-collapsed & {
       block-size: 100%;
       flex-direction: column;
