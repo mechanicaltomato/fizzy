@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2025_10_29_104115) do
+ActiveRecord::Schema[8.2].define(version: 2025_10_29_161222) do
   create_table "accesses", force: :cascade do |t|
     t.datetime "accessed_at"
     t.integer "collection_id", null: false
@@ -191,7 +191,9 @@ ActiveRecord::Schema[8.2].define(version: 2025_10_29_104115) do
     t.string "color", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
+    t.integer "position", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.index ["collection_id", "position"], name: "index_columns_on_collection_id_and_position"
     t.index ["collection_id"], name: "index_columns_on_collection_id"
   end
 

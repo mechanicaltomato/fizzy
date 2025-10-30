@@ -35,6 +35,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :columns, only: [] do
+    resource :left_position, module: :columns
+    resource :right_position, module: :columns
+  end
+
   namespace :columns do
     resources :cards do
       scope module: "cards" do

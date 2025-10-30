@@ -1,4 +1,6 @@
 class Column < ApplicationRecord
+  include Positioned
+
   belongs_to :collection, touch: true
   has_many :cards, dependent: :nullify
 
