@@ -22,7 +22,8 @@ class CollectionsController < ApplicationController
 
   def edit
     selected_user_ids = @collection.users.pluck :id
-    @selected_users, @unselected_users = User.active.alphabetically.partition { |user| selected_user_ids.include? user.id }
+    @selected_users, @unselected_users = \
+      User.active.alphabetically.partition { |user| selected_user_ids.include? user.id }
   end
 
   def update
