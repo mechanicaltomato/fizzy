@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2025_10_29_161222) do
+ActiveRecord::Schema[8.2].define(version: 2025_11_02_115338) do
   create_table "accesses", force: :cascade do |t|
     t.datetime "accessed_at"
     t.integer "collection_id", null: false
@@ -220,13 +220,13 @@ ActiveRecord::Schema[8.2].define(version: 2025_10_29_161222) do
     t.index ["filter_id"], name: "index_creators_filters_on_filter_id"
   end
 
-  create_table "entropy_configurations", force: :cascade do |t|
+  create_table "entropies", force: :cascade do |t|
     t.bigint "auto_postpone_period", default: 2592000, null: false
     t.integer "container_id", null: false
     t.string "container_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["container_type", "container_id", "auto_postpone_period"], name: "idx_on_container_type_container_id_auto_postpone_pe_47f82c5b73"
+    t.index ["container_type", "container_id", "auto_postpone_period"], name: "idx_on_container_type_container_id_auto_postpone_pe_3d79b50517"
     t.index ["container_type", "container_id"], name: "index_entropy_configurations_on_container", unique: true
   end
 

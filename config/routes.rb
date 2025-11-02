@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     post :enter, to: "entries#create"
     resource :join_code
     resource :settings
-    resource :entropy_configuration
+    resource :entropy
   end
 
   resources :users do
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resource :subscriptions
       resource :involvement
       resource :publication
-      resource :entropy_configuration
+      resource :entropy
 
       namespace :columns do
         resource :not_now

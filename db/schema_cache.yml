@@ -606,7 +606,7 @@ columns:
   creators_filters:
   - *25
   - *19
-  entropy_configurations:
+  entropies:
   - !ruby/object:ActiveRecord::ConnectionAdapters::SQLite3::Column
     auto_increment:
     name: auto_postpone_period
@@ -1254,7 +1254,7 @@ primary_keys:
   columns: id
   comments: id
   creators_filters:
-  entropy_configurations: id
+  entropies: id
   events: id
   filters: id
   filters_tags:
@@ -1301,7 +1301,7 @@ data_sources:
   columns: true
   comments: true
   creators_filters: true
-  entropy_configurations: true
+  entropies: true
   events: true
   filters: true
   filters_tags: true
@@ -2031,10 +2031,10 @@ indexes:
     nulls_not_distinct:
     comment:
     valid: true
-  entropy_configurations:
+  entropies:
   - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: entropy_configurations
-    name: idx_on_container_type_container_id_auto_postpone_pe_47f82c5b73
+    table: entropies
+    name: idx_on_container_type_container_id_auto_postpone_pe_3d79b50517
     unique: false
     columns:
     - container_type
@@ -2051,7 +2051,7 @@ indexes:
     comment:
     valid: true
   - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: entropy_configurations
+    table: entropies
     name: index_entropy_configurations_on_container
     unique: true
     columns:
@@ -2879,4 +2879,4 @@ indexes:
     nulls_not_distinct:
     comment:
     valid: true
-version: 20251029161222
+version: 20251102115338
