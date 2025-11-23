@@ -24,6 +24,8 @@ class Notification::BundleTest < ActiveSupport::TestCase
   end
 
   test "notifications are bundled withing the aggregation period" do
+    @user.notification_bundles.destroy_all
+
     notification_1 = assert_difference -> { @user.notification_bundles.pending.count }, 1 do
       @user.notifications.create!(source: events(:logo_published), creator: @user)
     end
@@ -38,7 +40,8 @@ class Notification::BundleTest < ActiveSupport::TestCase
       @user.notifications.create!(source: events(:logo_published), creator: @user)
     end
 
-    bundle_1, bundle_2 = @user.notification_bundles.last(2)
+    assert_equal 2, @user.notification_bundles.count
+    bundle_1, bundle_2 = @user.notification_bundles.all.to_a
     assert_includes bundle_1.notifications, notification_1
     assert_includes bundle_1.notifications, notification_2
     assert_includes bundle_2.notifications, notification_3
@@ -94,6 +97,8 @@ class Notification::BundleTest < ActiveSupport::TestCase
   end
 
   test "deliver_all delivers due bundles" do
+    @user.notification_bundles.destroy_all
+
     notification = @user.notifications.create!(source: events(:logo_published), creator: @user)
 
     bundle = @user.notification_bundles.pending.last
@@ -139,5 +144,20 @@ class Notification::BundleTest < ActiveSupport::TestCase
       # Time in Madrid should be 15:30 (UTC+1 in winter)
       assert_match /everything since 3pm/i, email.text_part&.body&.to_s
     end
+  end
+
+  test "out-of-order notification bundling should still work" do
+    first_notification = @user.notifications.create!(source: events(:logo_published), creator: @user)
+    second_notification = @user.notifications.create!(source: events(:logo_published), creator: @user)
+    @user.notification_bundles.destroy_all
+
+    assert first_notification.created_at < second_notification.created_at
+    @user.bundle(second_notification)
+    @user.bundle(first_notification)
+
+    assert_equal 1, @user.notification_bundles.pending.count
+    assert_equal 2, @user.notification_bundles.last.notifications.count
+    assert_includes @user.notification_bundles.last.notifications, first_notification
+    assert_includes @user.notification_bundles.last.notifications, second_notification
   end
 end

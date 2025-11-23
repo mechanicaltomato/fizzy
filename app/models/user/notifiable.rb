@@ -16,11 +16,18 @@ module User::Notifiable
 
   private
     def find_or_create_bundle_for(notification)
-      find_bundle_for(notification) || create_bundle_for(notification)
+      find_bundle_for(notification) || expand_pending_bundle_for(notification) || create_bundle_for(notification)
     end
 
     def find_bundle_for(notification)
       notification_bundles.pending.containing(notification).last
+    end
+
+    def expand_pending_bundle_for(notification)
+      pending = notification_bundles.pending.last
+      if pending.present? && notification.created_at < pending.starts_at
+        pending.update!(starts_at: notification.created_at) # expand the window to include this notification
+      end
     end
 
     def create_bundle_for(notification)

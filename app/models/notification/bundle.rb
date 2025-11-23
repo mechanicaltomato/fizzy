@@ -57,12 +57,12 @@ class Notification::Bundle < ApplicationRecord
     deliver_later
   end
 
-  private
-    def set_default_window
-      self.starts_at ||= Time.current
-      self.ends_at ||= self.starts_at + user.settings.bundle_aggregation_period
-    end
+  def set_default_window
+    self.starts_at ||= Time.current
+    self.ends_at ||= self.starts_at + user.settings.bundle_aggregation_period
+  end
 
+  private
     def window
       starts_at..ends_at
     end
