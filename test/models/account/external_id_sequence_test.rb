@@ -39,4 +39,16 @@ class Account::ExternalIdSequenceTest < ActiveSupport::TestCase
     assert_equal values.min..values.max, values.sort.first..values.sort.last
     assert_equal 20, values.max - values.min + 1, "Values should be sequential with no gaps"
   end
+
+  test "#value creates the first record if it doesn't yet exist" do
+    assert_nil Account::ExternalIdSequence.first
+
+    value = nil
+    assert_difference -> { Account::ExternalIdSequence.count }, 1 do
+      value = Account::ExternalIdSequence.value
+    end
+
+    assert_not_nil value
+    assert_equal value, Account::ExternalIdSequence.first.value
+  end
 end

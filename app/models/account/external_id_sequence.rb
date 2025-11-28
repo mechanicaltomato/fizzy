@@ -8,7 +8,7 @@ class Account::ExternalIdSequence < ApplicationRecord
     end
 
     def value
-      first&.value
+      first&.value || self.next
     end
 
     private
