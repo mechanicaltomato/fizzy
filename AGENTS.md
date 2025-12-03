@@ -149,3 +149,227 @@ Use Chrome MCP tools to interact with the running dev app for UI testing and deb
 ## Coding style
 
 Please read the separate file `STYLE.md` for some guidance on coding style.
+
+## AI Agent Documentation
+
+For comprehensive guidance on working with this codebase, see these additional files:
+
+### Core Documentation
+- **`AI_DEVELOPMENT.md`** - Comprehensive guide for AI coding agents
+  - Architecture patterns and best practices
+  - Frontend/backend stack details
+  - Extension points for new features
+  - AI/LLM integration opportunities
+  - Common pitfalls and solutions
+
+- **`SETUP.md`** - Detailed local setup instructions
+  - Prerequisites and installation
+  - Database configuration (SQLite/MySQL)
+  - Environment setup
+  - Common troubleshooting
+  - Useful command reference
+
+- **`TESTING.md`** - Testing strategies and patterns
+  - Unit, integration, and system tests
+  - Test data with fixtures
+  - Testing multi-tenancy
+  - Performance testing
+  - CI/CD integration
+
+- **`EXTENSION_POINTS.md`** - Specific customization guides
+  - AI/LLM feature examples (summarization, tagging, task breakdown)
+  - Adding custom fields
+  - External integrations (GitHub, Slack, Email)
+  - UI customizations (Stimulus controllers, CSS)
+  - Automation workflows
+  - Analytics and reporting
+  - API endpoints
+
+### Claude Code Features
+
+**Slash Commands** (`.claude/commands/`):
+- `/setup` - Set up or reset development environment
+- `/test` - Run test suite
+- `/migrate` - Handle database migrations
+- `/add-feature` - Guided feature addition
+- `/ai-feature` - Add AI/LLM integration
+- `/add-integration` - Add external service integration
+- `/check-style` - Run Rubocop
+- `/debug-issue` - Debug assistance
+- `/explain-code` - Explain codebase concepts
+- `/review-code` - Code quality review
+
+## AI/LLM Integration Points
+
+Fizzy has built-in support for AI features via `Card::Promptable`:
+
+```ruby
+# Format card for LLM consumption
+card.to_prompt
+# Returns structured text with title, description, metadata, assignees, etc.
+```
+
+**Recommended AI features to add:**
+1. **Card Summarization** - Generate summaries from descriptions
+2. **Smart Tagging** - Auto-suggest tags based on content
+3. **Task Breakdown** - Generate checklist steps from descriptions
+4. **Comment Analysis** - Extract action items, sentiment
+5. **Priority Suggestions** - Recommend card priorities
+6. **Similar Cards** - Find related cards using embeddings
+
+See `EXTENSION_POINTS.md` for implementation examples.
+
+## Key Patterns for AI Agents
+
+### Multi-Tenancy is Critical
+**Always scope queries to current account:**
+```ruby
+# ✅ Correct
+Current.account.cards.find(id)
+
+# ❌ Wrong - can access other accounts!
+Card.find(id)
+```
+
+### Event Tracking
+**Track all significant actions:**
+```ruby
+card.track_event "custom_action",
+  particulars: { data: value }
+```
+
+### Background Jobs
+**Use for slow operations (API calls, AI processing):**
+```ruby
+# Jobs automatically preserve Current.account
+MyFeatureJob.perform_later(card)
+```
+
+### Real-Time Updates
+**Use Turbo Streams for instant UI updates:**
+```ruby
+# Broadcast changes
+card.broadcast_replace_to card
+
+# In views
+<%= turbo_stream_from @card %>
+```
+
+### Testing
+**Write tests for all new features:**
+```ruby
+test "feature works correctly" do
+  # Test with proper account scoping
+end
+```
+
+## Common AI Agent Tasks
+
+### Adding a New Feature
+1. Read `EXTENSION_POINTS.md` for patterns
+2. Create controller in appropriate namespace
+3. Add routes (follow RESTful conventions)
+4. Create model logic (use concerns for shared behavior)
+5. Add views with Turbo Frames/Streams
+6. Track events for audit trail
+7. Write tests (unit + system)
+8. Run `bundle exec rubocop` for style
+
+### Adding AI Features
+1. Use `card.to_prompt` for formatted input
+2. Create service object or concern for AI logic
+3. Add background job for async processing
+4. Use Turbo Streams for real-time result updates
+5. Handle errors gracefully (API timeouts, rate limits)
+6. Add proper logging and monitoring
+7. Write comprehensive tests with stubbed APIs
+
+### Debugging Issues
+1. Check logs: `tail -f log/development.log`
+2. Verify account context: `Current.account`
+3. Check background jobs: http://fizzy.localhost:3006/admin/jobs
+4. Use Rails console: `bin/rails console`
+5. Add breakpoints: `binding.break`
+6. Review test failures for clues
+
+## Important Codebase Conventions
+
+### Model Organization
+- Use concerns for shared behavior (`app/models/concerns/`)
+- Order methods by invocation order
+- Use explicit conditionals (not guard clauses)
+- Delegate to models, not controllers
+
+### Controller Organization
+- Keep controllers shallow
+- Use standard REST actions (avoid custom actions)
+- Nested resources under parent (e.g., `cards/ai_summaries_controller.rb`)
+- Track events in models, not controllers
+
+### Frontend Organization
+- Stimulus controllers for interactions (`app/javascript/controllers/`)
+- Small, focused controllers with single responsibility
+- Use data attributes for configuration
+- Follow Hotwire patterns (Turbo Frames, Streams)
+
+### Background Jobs
+- Shallow job classes that delegate to models
+- Pass objects, not IDs (account context preserved)
+- Handle failures gracefully
+- Add to `config/recurring.yml` for scheduled tasks
+
+## Quick Reference
+
+### File Locations
+- Models: `app/models/`
+- Controllers: `app/controllers/`
+- Views: `app/views/`
+- JavaScript: `app/javascript/controllers/`
+- CSS: `app/assets/stylesheets/`
+- Jobs: `app/jobs/`
+- Tests: `test/`
+- Routes: `config/routes.rb`
+- Database: `db/schema.rb`
+
+### Key Models to Understand
+- `app/models/account.rb` - Tenant
+- `app/models/user.rb` - Account member
+- `app/models/card.rb` - Main domain object (24+ concerns!)
+- `app/models/board.rb` - Workspace
+- `app/models/event.rb` - Audit trail
+- `app/models/current.rb` - Request context
+
+### Development URLs
+- App: http://fizzy.localhost:3006
+- Jobs dashboard: http://fizzy.localhost:3006/admin/jobs
+- Mailer previews: http://fizzy.localhost:3006/rails/mailers
+- Health check: http://fizzy.localhost:3006/up
+
+## Getting Started Checklist
+
+When starting work on Fizzy:
+1. [ ] Read this file (AGENTS.md)
+2. [ ] Read `AI_DEVELOPMENT.md` for comprehensive overview
+3. [ ] Run `bin/setup` to initialize environment
+4. [ ] Run `bin/dev` to start server
+5. [ ] Login with `david@37signals.com` (check console for code)
+6. [ ] Explore the UI (create boards, cards, comments)
+7. [ ] Run `bin/rails test` to verify tests pass
+8. [ ] Read `EXTENSION_POINTS.md` for customization ideas
+9. [ ] Review `STYLE.md` for coding conventions
+10. [ ] Check `TESTING.md` before writing tests
+
+## Need Help?
+
+Use Claude Code slash commands:
+- `/explain-code` - Understand specific files or concepts
+- `/debug-issue` - Get help with errors
+- `/add-feature` - Guided feature addition
+- `/ai-feature` - Add AI capabilities
+
+Or refer to documentation:
+- Architecture questions → `AI_DEVELOPMENT.md`
+- Setup issues → `SETUP.md`
+- Testing questions → `TESTING.md`
+- How to add features → `EXTENSION_POINTS.md`
+- Code style → `STYLE.md`
