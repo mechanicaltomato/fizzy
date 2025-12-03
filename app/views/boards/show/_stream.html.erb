@@ -8,10 +8,16 @@
       <span class="for-screen-reader">Expand column</span>
     <% end %>
   </header>
-  <%= render "columns/show/add_card_button", board: board %>
   <% if page.used? %>
     <%= with_automatic_pagination "the-stream", @page do %>
       <%= render "boards/columns/list", cards: page.records, draggable: true %>
     <% end %>
   <% end %>
+
+  <div class="board-tools card margin-block-start">
+    <%= turbo_frame_tag dom_id(board, :involvement_button) do %>
+      <%= board_watchers_list(board) %>
+      <%= involvement_button(board, board.access_for(Current.user), true, false) %>
+    <% end %>
+  </div>
 <% end %>

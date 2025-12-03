@@ -186,5 +186,30 @@
       display: none;
     }
   }
+
+  /* Smaller add card button - lives below filters */
+  .filters + form.btn--link,
+  .filters + .btn--link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-size-small);
+    border: none;
+    background: transparent;
+    text-align: left;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: var(--color-background-hover);
+    }
+
+    kbd {
+      margin-left: auto;
+      font-size: var(--font-size-x-small);
+    }
+  }
 }
 

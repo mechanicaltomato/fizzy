@@ -27,3 +27,7 @@
   <% end %>
   <%= render "filters/settings/manage", user_filtering: user_filtering, no_filtering_url: no_filtering_url %>
 <% end %>
+
+<% if @board.present? %>
+  <%= render "filters/add_card_button", board: @board %>
+<% end %>
