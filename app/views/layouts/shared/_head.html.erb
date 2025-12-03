@@ -8,6 +8,17 @@
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0d181d" media="(prefers-color-scheme: dark)">
+
+  <script>
+    // Apply theme immediately to prevent flash
+    (function() {
+      const theme = localStorage.getItem('theme') || 'system';
+      if (theme !== 'system') {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= tag.meta name: "current-user-id", content: Current.user.id if Current.user %>

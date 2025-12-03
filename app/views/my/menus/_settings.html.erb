@@ -4,6 +4,23 @@
   <%= filter_place_menu_item notifications_path, "All notifications", "bell" %>
   <%= filter_place_menu_item notifications_settings_path, "Notification Settings", "settings" %>
 
+  <%= tag.li class: "popup__item popup__item--theme-switcher", data: { filter_target: "item", navigable_list_target: "item", controller: "theme" } do %>
+    <div class="theme-switcher">
+      <span class="theme-switcher__label">Theme</span>
+      <div class="theme-switcher__buttons">
+        <button type="button" class="btn btn--small" data-theme="light" data-action="click->theme#setTheme" data-theme-target="button" aria-label="Light mode">
+          Light
+        </button>
+        <button type="button" class="btn btn--small" data-theme="dark" data-action="click->theme#setTheme" data-theme-target="button" aria-label="Dark mode">
+          Dark
+        </button>
+        <button type="button" class="btn btn--small" data-theme="system" data-action="click->theme#setTheme" data-theme-target="button" aria-label="System preference">
+          System
+        </button>
+      </div>
+    </div>
+  <% end %>
+
   <%= tag.li class: "popup__item", data: { filter_target: "item", navigable_list_target: "item" } do %>
     <%= icon_tag "logout", class: "popup__icon" %>
     <%= button_to session_url(script_name: nil), method: :delete, class: "popup__btn btn", data: { turbo: false } do %>

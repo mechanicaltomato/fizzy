@@ -206,4 +206,44 @@
       }
     }
   }
+
+  /* Theme switcher */
+  .popup__item--theme-switcher {
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .theme-switcher {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--inline-space-half) var(--popup-item-padding-inline);
+    gap: 1rem;
+  }
+
+  .theme-switcher__label {
+    font-weight: 500;
+    font-size: var(--text-small);
+  }
+
+  .theme-switcher__buttons {
+    display: flex;
+    gap: 0.25rem;
+
+    .btn {
+      --btn-border-size: 1px;
+      --btn-padding: 0.5rem;
+      --btn-background: transparent;
+      --btn-border-color: var(--color-ink-lighter);
+      min-width: auto;
+
+      &[aria-pressed="true"] {
+        --btn-background: var(--color-ink);
+        --btn-border-color: var(--color-ink);
+        color: var(--color-ink-inverted);
+      }
+    }
+  }
 }
