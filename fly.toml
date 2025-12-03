@@ -1,0 +1,77 @@
+# Fizzy - Fly.io Configuration (FREE TIER ONLY - WILL NEVER CHARGE)
+#
+# Free tier limits (as of Dec 2024):
+# - Up to 3 shared-cpu-1x 256MB VMs (we use 1)
+# - 3GB persistent volume storage total
+# - 160GB outbound data transfer per month
+#
+# This configuration is locked to free tier to prevent any charges.
+
+app = 'trellomato-dev'
+primary_region = 'iad'  # Change to closest region (iad=Virginia, lax=LA, fra=Frankfurt)
+
+# Prevent console commands from waiting forever
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
+
+[experimental]
+  # Ensure we can allocate IPs for free
+  auto_rollback = true
+
+[build]
+
+[deploy]
+  # Never auto-scale beyond 1 instance (stay in free tier)
+  strategy = 'immediate'
+
+[env]
+  # Run in production mode
+  RAILS_ENV = 'production'
+  RAILS_LOG_TO_STDOUT = 'true'
+  RAILS_SERVE_STATIC_FILES = 'true'
+
+  # Use SQLite for free tier (no external DB costs)
+  DB_ADAPTER = 'sqlite'
+
+  # Run Solid Queue in Puma (no separate worker machine needed)
+  SOLID_QUEUE_IN_PUMA = 'true'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'  # Stop when idle to save resources
+  auto_start_machines = true   # Start on request
+  min_machines_running = 0     # Can scale to 0 when idle (FREE!)
+  processes = ['app']
+
+  # Health check
+  [http_service.concurrency]
+    type = 'connections'
+    hard_limit = 25
+    soft_limit = 20
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/up'
+    protocol = 'http'
+    tls_skip_verify = false
+
+# VM Configuration - LOCKED TO FREE TIER
+[[vm]]
+  memory = '256mb'    # FREE TIER: shared-cpu-1x with 256MB
+  cpu_kind = 'shared' # FREE TIER: shared CPU only
+  cpus = 1            # FREE TIER: 1 CPU
+
+# Persistent storage for SQLite database
+[mounts]
+  source = 'fizzy_data'
+  destination = '/data'
+  initial_size = '1gb'  # FREE TIER: 1GB volume (max 3GB total free)
+
+# Metrics (optional, free)
+[metrics]
+  port = 9091
+  path = '/metrics'
