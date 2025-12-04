@@ -19,10 +19,6 @@
       &:hover {
         filter: brightness(0.9);
 
-        span {
-          background: var(--color-ink-lighter);
-        }
-
         @media (prefers-color-scheme: dark) {
           --input-background: var(--color-ink-lighter);
         }
@@ -30,15 +26,6 @@
     }
 
     span {
-      background: var(--color-ink-lightest);
-      block-size: auto;
-      border-radius: 0.3125em;
-      box-shadow:
-        0 0 0 1px oklch(var(--lch-ink-darkest) / 0.1),
-        0 0.1em 0.2em -0.1em oklch(var(--lch-ink-darkest) / 0.05),
-        0 0.2em 0.4em -0.2em oklch(var(--lch-ink-darkest) / 0.05),
-        0 0.3em 0.6em -0.3em oklch(var(--lch-ink-darkest) / 0.05)
-      ;
       display: grid;
       height: 1.5em;
       inline-size: 1.5em;
@@ -48,10 +35,10 @@
     }
 
     svg {
+      color: #C20F45;
       height: 100%;
-      margin-inline-start: 0.4125em;
       margin-inline-end: 0.5375em;
-      max-height: 0.8625em;
+      max-height: 1.1em;
       overflow: visible;
       width: auto;
     }
