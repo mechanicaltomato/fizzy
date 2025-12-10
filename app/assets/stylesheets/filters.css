@@ -150,9 +150,6 @@
       display: none !important;
     }
 
-    @media (max-width: 80ch) {
-      display: none;
-    }
   }
 
   .filters:not(.filters--expanded) {

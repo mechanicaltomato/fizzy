@@ -15,7 +15,7 @@ bin/dev                # Start development server (runs on port 3006)
 ```
 
 Development URL: http://fizzy.localhost:3006
-Login with: david@37signals.com (development fixtures), password will appear in the browser console
+Login with: david@example.com (development fixtures), password will appear in the browser console
 
 ### Testing
 ```bash
@@ -142,13 +142,13 @@ Key recurring tasks (via `config/recurring.yml`):
 ### Chrome MCP (Local Dev)
 
 URL: `http://fizzy.localhost:3006`
-Login: david@37signals.com (passwordless magic link auth - check rails console for link)
+Login: david@example.com (passwordless magic link auth - check rails console for link)
 
 Use Chrome MCP tools to interact with the running dev app for UI testing and debugging.
 
 ## Coding style
 
-Please read the separate file `STYLE.md` for some guidance on coding style.
+@STYLE.md
 
 ## AI Agent Documentation
 
@@ -352,7 +352,7 @@ When starting work on Fizzy:
 2. [ ] Read `AI_DEVELOPMENT.md` for comprehensive overview
 3. [ ] Run `bin/setup` to initialize environment
 4. [ ] Run `bin/dev` to start server
-5. [ ] Login with `david@37signals.com` (check console for code)
+5. [ ] Login with `david@example.com` (check console for code)
 6. [ ] Explore the UI (create boards, cards, comments)
 7. [ ] Run `bin/rails test` to verify tests pass
 8. [ ] Read `EXTENSION_POINTS.md` for customization ideas

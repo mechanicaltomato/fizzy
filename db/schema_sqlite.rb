@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2025_12_01_100607) do
+ActiveRecord::Schema[8.2].define(version: 2025_12_05_010536) do
   create_table "accesses", id: :uuid, force: :cascade do |t|
     t.datetime "accessed_at"
     t.uuid "account_id", null: false
@@ -321,6 +321,16 @@ ActiveRecord::Schema[8.2].define(version: 2025_12_01_100607) do
     t.index ["email_address"], name: "index_identities_on_email_address", unique: true
   end
 
+  create_table "identity_access_tokens", id: :uuid, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description", limit: 65535
+    t.uuid "identity_id", null: false
+    t.string "permission", limit: 255
+    t.string "token", limit: 255
+    t.datetime "updated_at", null: false
+    t.index ["identity_id"], name: "index_access_token_on_identity_id"
+  end
+
   create_table "magic_links", id: :uuid, force: :cascade do |t|
     t.string "code", limit: 255, null: false
     t.datetime "created_at", null: false
@@ -499,6 +509,7 @@ ActiveRecord::Schema[8.2].define(version: 2025_12_01_100607) do
     t.string "name", limit: 255, null: false
     t.string "role", limit: 255, default: "member", null: false
     t.datetime "updated_at", null: false
+    t.datetime "verified_at"
     t.index ["account_id", "identity_id"], name: "index_users_on_account_id_and_identity_id", unique: true
     t.index ["account_id", "role"], name: "index_users_on_account_id_and_role"
     t.index ["identity_id"], name: "index_users_on_identity_id"
